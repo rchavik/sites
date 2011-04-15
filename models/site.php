@@ -16,7 +16,12 @@ class Site extends SitesAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		)
+		),
+		'SiteContents' => array(
+			'className' => 'Sites.SitesNode',
+			'foreignKey' => 'site_id',
+			'dependent' => true,
+		),
 	);
 
 }
