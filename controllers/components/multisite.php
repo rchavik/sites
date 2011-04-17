@@ -45,6 +45,9 @@ class MultisiteComponent extends Object {
 	}
 
 	function initialize(&$controller, $settings = array()) {
+		if (1 == $controller->Auth->user('role_id')) {
+			$controller->Node->Behaviors->detach('Sites.SiteFilter');
+		}
 	}
 
 }
