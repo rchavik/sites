@@ -16,6 +16,7 @@ class SitesSchema extends CakeSchema {
 		'name' => array('type' => 'string', 'length' => 255, 'null' => true),
 		'slug' => array('type' => 'string', 'length' => 255, 'null' => true),
 		'description' => array('type' => 'text', 'length' => 512, 'null' => true),
+		'theme' => array('type' => 'string', 'length' => 255, 'null' => true),
 		'created_by' => array('type' => 'string', 'length' => 36),
 		'created' => array('type' => 'timestamp', 'null' => true),
 		'modified_by' => array('type' => 'string', 'length' => 36),

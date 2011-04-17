@@ -48,6 +48,10 @@ class MultisiteComponent extends Object {
 		if (1 == $controller->Auth->user('role_id')) {
 			$controller->Node->Behaviors->detach('Sites.SiteFilter');
 		}
+		$site = Sites::currentSite();
+		if (!empty($site['Site']['theme'])) {
+			Configure::write('Site.theme', $site['Site']['theme']);
+		}
 	}
 
 }
