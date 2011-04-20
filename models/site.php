@@ -16,12 +16,17 @@ class Site extends SitesAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		),
-		'SiteContents' => array(
-			'className' => 'Sites.SitesNode',
+			),
+		);
+
+	var $hasAndBelongsToMany = array(
+		'Node' => array(
+			'className' => 'Node',
+			'joinTable' => 'sites_nodes',
 			'foreignKey' => 'site_id',
+			'associationForeignKey' => 'node_id',
 			'dependent' => true,
-		),
-	);
+			),
+		);
 
 }
