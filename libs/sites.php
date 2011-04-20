@@ -2,6 +2,8 @@
 
 class Sites {
 
+	const ALL_SITES = 1;
+
 	private static $_site = array();
 
 	public function &getInstance() {

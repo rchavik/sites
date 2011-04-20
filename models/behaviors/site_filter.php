@@ -15,7 +15,7 @@ class SiteFilterBehavior extends ModelBehavior {
 				),
 			);
 		$query['joins'] = $joins;
-		$query['conditions']['SitesNode.site_id'] = $site['Site']['id'];
+		$query['conditions']['SitesNode.site_id'] = array(Sites::ALL_SITES, $site['Site']['id']);
 		return $query;
 	}
 
