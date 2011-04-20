@@ -3,7 +3,7 @@
 	<fieldset>
 		<legend><?php __('Add Domain'); ?></legend>
 	<?php
-		echo $this->Form->input('site_id');
+		echo $this->Form->input('site_id', array('selected' => $selected));
 		echo $this->Form->input('domain');
 	?>
 	</fieldset>

@@ -27,6 +27,7 @@
 		<td><?php echo $site['Site']['modified']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View Domains', true), array('controller' => 'site_domains', 'action' => 'index', $site['Site']['id'])); ?>
+			<?php echo $this->Html->link(__('New Domain', true), array('controller' => 'site_domains', 'action' => 'add', $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $site['Site']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $site['Site']['id'])); ?>

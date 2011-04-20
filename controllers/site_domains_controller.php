@@ -34,8 +34,21 @@ class SiteDomainsController extends SitesAppController {
 				$this->Session->setFlash(__('The site domain could not be saved. Please, try again.', true));
 			}
 		}
-		$sites = $this->SiteDomain->Site->find('list');
-		$this->set(compact('sites'));
+		$selected = isset($this->params['pass'][0]) ? $this->params['pass'][0] : array();
+
+		$options = array(
+			'conditions' => array(
+				'Site.id >' => Sites::ALL_SITES,
+			),
+		);
+		if (!empty($selected)) {
+			$options = Set::merge($options, array(
+				'conditions' => array('Site.id' => $selected)
+				)
+			);
+		}
+		$sites = $this->SiteDomain->Site->find('list', $options);
+		$this->set(compact('sites', 'selected'));
 	}
 
 	function admin_edit($id = null) {
@@ -54,7 +67,12 @@ class SiteDomainsController extends SitesAppController {
 		if (empty($this->data)) {
 			$this->data = $this->SiteDomain->read(null, $id);
 		}
-		$sites = $this->SiteDomain->Site->find('list');
+		$options = array(
+			'conditions' => array(
+				'Site.id >' => Sites::ALL_SITES,
+			),
+		);
+		$sites = $this->SiteDomain->Site->find('list', $options);
 		$this->set(compact('sites'));
 	}
 
