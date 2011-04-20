@@ -14,6 +14,19 @@ class Sites {
 		return $instance;
 	}
 
+	private function _overrideSetting($key) {
+		if (is_string($key)) {
+			$keys = array($key);
+		} else {
+			$keys = $key;
+		}
+		foreach ($keys as $key) {
+			if (! empty(self::$_site['Site'][$key])) {
+				Configure::write('Site.' . $key, self::$_site['Site'][$key]);
+			}
+		}
+	}
+
 	public function currentSite($siteId = null) {
 		$_this = Sites::getInstance();
 		if (! self::$_site) {
@@ -23,9 +36,10 @@ class Sites {
 				self::$_site = $_this->_getSite($siteId);
 			}
 		}
-		if (! empty(self::$_site['Site']['theme'])) {
-			Configure::write('Site.theme', self::$_site['Site']['theme']);
-		}
+		$_this->_overrideSetting(array(
+			'name', 'tagline', 'theme', 'timezone', 'locale', 'status',
+			));
+
 		return self::$_site;
 	}
 
