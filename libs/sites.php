@@ -37,7 +37,7 @@ class Sites {
 			}
 		}
 		$_this->_overrideSetting(array(
-			'name', 'tagline', 'theme', 'timezone', 'locale', 'status',
+			'title', 'tagline', 'theme', 'timezone', 'locale', 'status',
 			));
 
 		return self::$_site;
@@ -47,7 +47,7 @@ class Sites {
 
 		$options = array(
 			'recursive' => false,
-			'fields' => array('id', 'theme'),
+			'fields' => array('id', 'title', 'tagline', 'theme', 'timezone', 'locale', 'status'),
 			'joins' => array(
 				array(
 					'table' => 'site_domains',
