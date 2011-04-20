@@ -3,6 +3,10 @@ class SitesController extends SitesAppController {
 
 	var $name = 'Sites';
 
+	var $helpers = array(
+		'Sites.Sites',
+		);
+
 	function admin_index() {
 		$this->Site->recursive = 0;
 		$this->set('sites', $this->paginate());

@@ -6,11 +6,19 @@
 			<?php echo $site['Site']['id']; ?>
 			&nbsp;
 		</dd>
+
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Title'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $site['Site']['title']; ?>
 			&nbsp;
 		</dd>
+
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Tagline'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $site['Site']['tagline']; ?>
+			&nbsp;
+		</dd>
+
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Description'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $site['Site']['description']; ?>
@@ -21,6 +29,25 @@
 			<?php echo $site['Site']['theme']; ?>
 			&nbsp;
 		</dd>
+
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Timezone'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $site['Site']['timezone']; ?>
+			&nbsp;
+		</dd>
+
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Locale'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $site['Site']['locale']; ?>
+			&nbsp;
+		</dd>
+
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Status'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $site['Site']['status']; ?>
+			&nbsp;
+		</dd>
+
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $site['Site']['created']; ?>
