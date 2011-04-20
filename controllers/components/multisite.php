@@ -49,9 +49,6 @@ class MultisiteComponent extends Object {
 			$controller->Node->Behaviors->detach('Sites.SiteFilter');
 		}
 		$site = Sites::currentSite();
-		if (!empty($site['Site']['theme'])) {
-			Configure::write('Site.theme', $site['Site']['theme']);
-		}
 	}
 
 }

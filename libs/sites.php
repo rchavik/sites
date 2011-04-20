@@ -18,6 +18,13 @@ class Sites {
 		$_this = Sites::getInstance();
 		if (! self::$_site) {
 			self::$_site = $_this->_getSite($siteId);
+		} else {
+			if (self::$_site['Site']['id'] != $siteId) {
+				self::$_site = $_this->_getSite($siteId);
+			}
+		}
+		if (! empty(self::$_site['Site']['theme'])) {
+			Configure::write('Site.theme', self::$_site['Site']['theme']);
 		}
 		return self::$_site;
 	}
@@ -33,11 +40,16 @@ class Sites {
 					'alias' => 'SiteDomain',
 					'conditions' => array(
 						'SiteDomain.site_id = Site.id',
-						'SiteDomain.domain LIKE' => '%' . env('HTTP_HOST')
 						),
 					),
 				),
 			);
+
+		if (empty($siteId)) {
+			$options['joins'][0]['conditions']['SiteDomain.domain LIKE'] = '%' . env('HTTP_HOST');
+		} else {
+			$options['conditions'] = array('Site.id' => $siteId);
+		}
 
 		return ClassRegistry::init('Sites.Site')->find('first', $options);
 	}
