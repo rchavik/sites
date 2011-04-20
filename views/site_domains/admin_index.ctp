@@ -20,7 +20,7 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $siteDomain['SiteDomain']['id']; ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($siteDomain['Site']['name'], array('controller' => 'sites', 'action' => 'view', $siteDomain['Site']['id'])); ?>
+			<?php echo $this->Html->link($siteDomain['Site']['title'], array('controller' => 'sites', 'action' => 'view', $siteDomain['Site']['id'])); ?>
 		</td>
 		<td><?php echo $siteDomain['SiteDomain']['domain']; ?>&nbsp;</td>
 		<td><?php echo $siteDomain['SiteDomain']['created']; ?>&nbsp;</td>

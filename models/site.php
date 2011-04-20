@@ -1,7 +1,7 @@
 <?php
 class Site extends SitesAppModel {
 	var $name = 'Site';
-	var $displayField = 'name';
+	var $displayField = 'title';
 
 	var $hasMany = array(
 		'SiteDomain' => array(

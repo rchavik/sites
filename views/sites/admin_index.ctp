@@ -3,7 +3,7 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
+			<th><?php echo $this->Paginator->sort('title');?></th>
 			<th><?php echo $this->Paginator->sort('description');?></th>
 			<th><?php echo $this->Paginator->sort('theme');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
@@ -20,7 +20,7 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php echo $site['Site']['id']; ?>&nbsp;</td>
-		<td><?php echo $site['Site']['name']; ?>&nbsp;</td>
+		<td><?php echo $site['Site']['title']; ?>&nbsp;</td>
 		<td><?php echo $site['Site']['description']; ?>&nbsp;</td>
 		<td><?php echo $site['Site']['theme']; ?>&nbsp;</td>
 		<td><?php echo $site['Site']['created']; ?>&nbsp;</td>

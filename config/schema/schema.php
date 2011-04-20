@@ -13,9 +13,14 @@ class SitesSchema extends CakeSchema {
 
 	var $sites = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'length' => 255, 'null' => true),
+		'title' => array('type' => 'string', 'length' => 255, 'null' => true),
 		'slug' => array('type' => 'string', 'length' => 255, 'null' => true),
 		'description' => array('type' => 'text', 'length' => 512, 'null' => true),
+		'tagline' => array('type' => 'string', 'length' => 128, 'null' => true),
+		'email' => array('type' => 'string', 'length' => 128, 'null' => true),
+		'locale' => array('type' => 'string', 'length' => 20, 'null' => true),
+		'status' => array('type' => 'boolean', 'null' => true, 'default' => true),
+		'timezone' => array('type' => 'integer', 'null' => true, 'default' => 0),
 		'theme' => array('type' => 'string', 'length' => 255, 'null' => true),
 		'created_by' => array('type' => 'string', 'length' => 36),
 		'created' => array('type' => 'timestamp', 'null' => true),

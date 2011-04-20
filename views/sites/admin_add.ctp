@@ -3,9 +3,14 @@
 	<fieldset>
 		<legend><?php __('Add Site'); ?></legend>
 	<?php
-		echo $this->Form->input('name');
+		echo $this->Form->input('title');
 		echo $this->Form->input('description');
+		echo $this->Form->input('tagline');
+		echo $this->Form->input('email');
+		echo $this->Form->input('locale');
+		echo $this->Form->input('timezone');
 		echo $this->Form->input('theme');
+		echo $this->Form->input('status');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
