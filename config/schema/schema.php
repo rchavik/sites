@@ -28,8 +28,8 @@ class SitesSchema extends CakeSchema {
 		'modified' => array('type' => 'timestamp', 'null' => true),
 		'indexes' => array(
 			'id' => array('column' => array('id'), 'unique' => true),
-			'ix_sites_name' => array(
-				'column' => array('name'),
+			'ix_site_title' => array(
+				'column' => array('slug'),
 				'unique' => true,
 				),
 			),
