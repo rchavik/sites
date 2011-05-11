@@ -1,6 +1,7 @@
 <?php
 class SiteDomain extends SitesAppModel {
 	var $name = 'SiteDomain';
+	var $useDbConfig = 'sites';
 
 	var $belongsTo = array(
 		'Site' => array(

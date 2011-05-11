@@ -2,6 +2,7 @@
 class Site extends SitesAppModel {
 	var $name = 'Site';
 	var $displayField = 'title';
+	var $useDbConfig = 'sites';
 
 	var $hasMany = array(
 		'SiteDomain' => array(
@@ -26,6 +27,7 @@ class Site extends SitesAppModel {
 			'foreignKey' => 'site_id',
 			'associationForeignKey' => 'node_id',
 			'dependent' => true,
+			'with' => 'Sites.SitesNode',
 			),
 		);
 
