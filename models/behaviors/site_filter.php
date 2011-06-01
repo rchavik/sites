@@ -3,22 +3,7 @@
 class SiteFilterBehavior extends ModelBehavior {
 
 	function setup(&$model, $config = array()) {
-		if (empty($config)) {
-			// when $config is empty, we assume that it was loaded by
-			// Croogo hookHelper()
-			$config = array(
-				'relationship' => array(
-					'hasAndBelongsToMany' => array(
-						'Site' => array(
-							'className' => 'Sites.Site',
-							'with' => 'Sites.SitesNode',
-							)
-						)
-					)
-				);
-		}
 		$this->settings[$model->alias] = $config;
-		$this->_setupRelationships($model, $config);
 	}
 
 	function _setupRelationships(&$model, $config = array()) {
@@ -30,6 +15,7 @@ class SiteFilterBehavior extends ModelBehavior {
 	}
 
 	function beforeFind(&$model, $query) {
+		$this->_setupRelationships($model, $this->settings[$model->alias]);
 		$site = Sites::currentSite();
 		$sites = array(Sites::ALL_SITES, $site['Site']['id']);
 
@@ -83,11 +69,11 @@ class SiteFilterBehavior extends ModelBehavior {
 						'table' => $ds->fullTableName($joinModel),
 						'alias' => $joinModel->alias,
 						'conditions' => array(
-							"{$model->alias}.{$model->primaryKey} = {$joinModel->alias}.$foreignKey",
+							"{$model->alias}.{$model->primaryKey} = {$joinModel->alias}.$associationForeignKey",
 							),
 						),
 					));
-				$query['conditions'][$joinModel->alias . '.' . $associationForeignKey] = $sites;
+				$query['conditions'][$joinModel->alias . '.' . $foreignKey] = $sites;
 				break;
 			}
 		}
