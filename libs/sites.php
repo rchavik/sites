@@ -28,13 +28,11 @@ class Sites {
 	}
 
 	public function currentSite($siteId = null) {
-		$_this = Sites::getInstance();
-		if (! self::$_site) {
+		$_this =& Sites::getInstance();
+		if (empty(self::$_site) || $siteId !== null) {
 			self::$_site = $_this->_getSite($siteId);
-		} else {
-			if (self::$_site['Site']['id'] != $siteId) {
-				self::$_site = $_this->_getSite($siteId);
-			}
+		} elseif (empty(self::$_site)) {
+			self::$_site = $_this->_getSite($siteId);
 		}
 		$_this->_overrideSetting(array(
 			'title', 'tagline', 'theme', 'timezone', 'locale', 'status',
