@@ -1,6 +1,17 @@
 <?php
 
-Croogo::hookBehavior('Node', 'Sites.SiteFilter');
+Croogo::hookBehavior('Node', 'Sites.SiteFilter', array(
+	'relationship' => array(
+		'hasAndBelongsToMany' => array(
+			'Site' => array(
+				'className' => 'Sites.Site',
+				'with' => 'Sites.SitesNode',
+				'foreignKey' => 'site_id',
+				'associationForeignKey' => 'node_id',
+				),
+			),
+		),
+	));
 
 Croogo::hookComponent('*', 'Sites.Multisite');
 
