@@ -3,18 +3,24 @@
 class SiteFilterBehavior extends ModelBehavior {
 
 	function setup(&$model, $config = array()) {
+		$config = Set::merge($config, array(
+			'relationship' => false,
+			'joins' => false,
+			'enabled' => true,
+			));
 		$this->settings[$model->alias] = $config;
 	}
 
 	function _setupRelationships(&$model, $config = array()) {
-		if (!empty($this->settings[$model->alias])) {
-			if (!empty($this->settings[$model->alias]['relationship'])) {
-				$model->bindModel($config['relationship'], false);
-			}
+		if (!empty($this->settings[$model->alias]['relationship'])) {
+			$model->bindModel($config['relationship'], false);
 		}
 	}
 
 	function beforeFind(&$model, $query) {
+		if ($this->settings[$model->alias]['enabled'] === false) {
+			return $query;
+		}
 		$this->_setupRelationships($model, $this->settings[$model->alias]);
 		$site = Sites::currentSite();
 		$sites = array(Sites::ALL_SITES, $site['Site']['id']);
