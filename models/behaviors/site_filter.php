@@ -57,6 +57,10 @@ class SiteFilterBehavior extends ModelBehavior {
 			}
 		}
 
+		if (!empty($query['joins'])) {
+			$joins = Set::merge($query['joins'], $joins);
+		}
+
 		if (!empty($relationship)) {
 			$relation = key($relationship);
 			$foreignKey = $model->{$relation}['Site']['foreignKey'];
