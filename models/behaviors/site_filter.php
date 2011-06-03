@@ -7,6 +7,7 @@ class SiteFilterBehavior extends ModelBehavior {
 			'relationship' => false,
 			'joins' => false,
 			'enabled' => true,
+			'filter' => true,
 			), $config);
 		$this->settings[$model->alias] = $config;
 	}
@@ -15,6 +16,14 @@ class SiteFilterBehavior extends ModelBehavior {
 		if (!empty($this->settings[$model->alias]['relationship'])) {
 			$model->bindModel($config['relationship'], false);
 		}
+	}
+
+	function enableFilter(&$model) {
+		$this->settings[$model->alias]['filter'] = true;
+	}
+
+	function disableFilter(&$model) {
+		$this->settings[$model->alias]['filter'] = false;
 	}
 
 	function beforeFind(&$model, $query) {
@@ -53,7 +62,7 @@ class SiteFilterBehavior extends ModelBehavior {
 			$joins = Set::merge($query['joins'], $joins);
 		}
 
-		if (!empty($relationship)) {
+		if (!empty($relationship) && $this->settings[$model->alias]['filter']) {
 			$relation = key($relationship);
 			$foreignKey = $model->{$relation}['Site']['foreignKey'];
 			switch ($relation) {
