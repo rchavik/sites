@@ -70,7 +70,9 @@ class MultisiteComponent extends Object {
 	function initialize(&$controller, $settings = array()) {
 		if (1 == $controller->Auth->user('role_id') && isset($controller->params['admin'])) {
 			$Model =& $controller->{$controller->modelClass};
-			$Model->Behaviors->SiteFilter->disableFilter($Model);
+			if (property_exists($Model->Behaviors, 'SiteFilter')) {
+				$Model->Behaviors->SiteFilter->disableFilter($Model);
+			}
 		}
 		$site = Sites::currentSite();
 	}
