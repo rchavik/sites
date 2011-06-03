@@ -20,8 +20,8 @@ Croogo::hookBehavior('ForumCategory', 'Sites.SiteFilter', array(
 			'Site' => array(
 				'className' => 'Sites.Site',
 				'with' => 'Cakeforum.SitesForumCategory',
-				'foreignKey' => 'site_id',
-				'associationForeignKey' => 'forum_category_id',
+				'foreignKey' => 'forum_category_id',
+				'associationForeignKey' => 'site_id',
 				),
 			),
 		),

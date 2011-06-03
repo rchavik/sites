@@ -78,17 +78,15 @@ class SiteFilterBehavior extends ModelBehavior {
 				$ds = $joinModel->getDataSource();
 				$associationForeignKey = $model->{$relation}['Site']['associationForeignKey'];
 
-				$joins = Set::merge($joins, array(
-					array(
-						'type' => 'LEFT',
-						'table' => $ds->fullTableName($joinModel),
-						'alias' => $joinModel->alias,
-						'conditions' => array(
-							"{$model->alias}.{$model->primaryKey} = {$joinModel->alias}.$associationForeignKey",
-							),
+				$joins[] = array(
+					'type' => 'LEFT',
+					'table' => $ds->fullTableName($joinModel),
+					'alias' => $joinModel->alias,
+					'conditions' => array(
+						"{$model->alias}.{$model->primaryKey} = {$joinModel->alias}.$foreignKey",
 						),
-					));
-				$query['conditions'][$joinModel->alias . '.' . $foreignKey] = $sites;
+					);
+				$query['conditions'][$joinModel->alias . '.' . $associationForeignKey] = $sites;
 				break;
 			}
 		}
