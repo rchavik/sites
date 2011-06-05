@@ -2,7 +2,7 @@
 class SitesNode extends SitesAppModel {
 
 	var $name = 'SitesNode';
-	var $useDbConfig = 'sites';
+	//var $useDbConfig = 'default';
 	var $useTable = 'sites_nodes';
 
 }

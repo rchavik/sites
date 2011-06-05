@@ -1,26 +1,62 @@
 <div class="sites form">
-<?php echo $this->Form->create('Site');?>
-	<fieldset>
-		<legend><?php __('Edit Site'); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('title');
-		echo $this->Form->input('description');
-		echo $this->Form->input('tagline');
-		echo $this->Form->input('email');
-		echo $this->Form->input('locale');
-		echo $this->Form->input('timezone');
-		echo $this->Form->input('theme');
-		echo $this->Form->input('status');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
+	<h2><?php echo $title_for_layout;?></h2>
+    
+    <div class="actions">
+        <ul>
+            <li><?php echo $html->link(__('Back', true), array('action'=>'index')); ?></li>
+        </ul>
+    </div>
 
-		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Site.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Site.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Sites', true), array('action' => 'index'));?></li>
-	</ul>
+	<?php echo $form->create('Site');?>
+        <fieldset>
+            <div class="tabs">
+                <ul>
+                    <li><a href="#site-basic"><span><?php __('Settings'); ?></span></a></li>
+                    <li><a href="#site-domains"><span><?php __('Domains'); ?></span></a></li>
+                    <?php echo $layout->adminTabs(); ?>
+                </ul>
+
+                <div id="site-basic">
+                    <?php
+                    	echo $form->input('Site.id');
+                        echo $form->input('Site.title');
+						echo $form->input('Site.description');
+						echo $form->input('Site.tagline');
+						echo $form->input('Site.email');
+						echo $form->input('Site.locale');
+						echo $form->input('Site.timezone');
+						echo $form->input('Site.theme');
+						echo $form->input('Site.status');
+                    ?>
+                </div>
+
+                <div id="site-domains">
+                    <?php
+                    	if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) {
+                    		//$amount_of_domains = count($this->data['SiteDomain']);
+	                    	foreach ( $this->data['SiteDomain'] as $key => $value ) {
+	                    		echo $form->input('SiteDomain.'.$key.'.id');
+	                        	echo $form->input('SiteDomain.'.$key.'.domain');
+	                        	if (count($this->data['SiteDomain']) > 1) {
+	                        		echo $html->link(__('Delete', true), array('action' => 'deletedomain', $this->data['SiteDomain'][$key]['id']));
+	                        	}
+	                        }
+	                ?>
+	                        <div class="actions">
+        						<ul>
+            						<li><?php echo $html->link(__('Add', true), array('action' => 'adddomain', $this->data['Site']['id'])); ?></li>
+            					</ul>
+            				</div>
+					<?php
+	                    } else {
+	                    	echo $form->input('SiteDomain.0.id');
+	                    	echo $form->input('SiteDomain.0.domain');
+	                    }
+                    ?>
+                </div>
+                <?php echo $layout->adminTabs(); ?>
+            </div>
+        </fieldset>
+    <?php echo $form->end('Submit');?>
+
 </div>

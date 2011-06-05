@@ -38,6 +38,7 @@ class SitesSchema extends CakeSchema {
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
 			),
+		'default' => array('type' => 'integer', 'null' => true, 'default' => 0),
 		);
 
 	var $site_domains = array(
