@@ -10,6 +10,7 @@ class SiteFilterBehavior extends ModelBehavior {
 			'filter' => true,
 			), $config);
 		$this->settings[$model->alias] = $config;
+		$this->_setupRelationships($model, $config);
 	}
 
 	function _setupRelationships(&$model, $config = array()) {
@@ -30,7 +31,6 @@ class SiteFilterBehavior extends ModelBehavior {
 		if ($this->settings[$model->alias]['enabled'] === false) {
 			return $query;
 		}
-		$this->_setupRelationships($model, $this->settings[$model->alias]);
 		$site = Sites::currentSite();
 		$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
 
