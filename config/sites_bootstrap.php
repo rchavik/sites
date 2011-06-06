@@ -26,6 +26,7 @@ Croogo::hookBehavior('ForumCategory', 'Sites.SiteFilter', array(
 			),
 		),
 	));
+Croogo::hookComponent('ForumCategories', 'Sites.SiteFilter');
 endif;
 
 Croogo::hookComponent('*', 'Sites.Multisite');

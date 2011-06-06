@@ -4,6 +4,8 @@ App::import('Libs', 'Sites.sites');
 
 class MultisiteComponent extends Object {
 
+	var $controller = false;
+
 	function _setLookupFields(&$controller) {
 		$controller->set('sites', ClassRegistry::init('Sites.Site')->find('list'));
 	}
@@ -33,33 +35,6 @@ class MultisiteComponent extends Object {
 			);
 			Cache::config($cacheName, $setting);
 		}
-	}
-
-	function applyFilter(&$controller) {
-        $filterKey = 'Sites.' . $controller->modelClass . '.adminFilter';
-        if (isset($controller->data['filter']['Site'])) {
-            $filterSiteId = $controller->data['filter']['Site'];
-            if (empty($filterSiteId)) {
-                $controller->Session->delete($filterKey);
-            } else {
-                $controller->Session->write($filterKey, $filterSiteId);
-            }
-        }
-        if ($filterSiteId = $controller->Session->read($filterKey)) {
-			$tableName = $controller->{$controller->modelClass}->useTable;
-			$joinTable = 'sites_' . $tableName;
-			$alias = 'Sites' . $controller->modelClass;
-            $controller->paginate[$controller->modelClass]['joins'][] = array(
-                'type' => 'LEFT',
-                'table' => $joinTable,
-                'alias' => $alias,
-                'conditions' => array(
-                    $alias . '.forum_category_id = ' . $controller->modelClass. '.id',
-                    ),
-                );
-            $controller->paginate[$controller->modelClass]['conditions'][$alias . '.site_id'] = $filterSiteId;
-        }
-
 	}
 
 	function startup(&$controller) {
