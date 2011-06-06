@@ -82,4 +82,24 @@ class SitesSchema extends CakeSchema {
 			),
 		);
 
+	var $sites_forum_categories = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'site_id' => array('type' => 'integer', 'null' => false),
+		'forum_category_id' => array('type' => 'integer', 'null' => 'false'),
+		'created_by' => array('type' => 'string', 'length' => 36),
+		'created' => array('type' => 'datetime', 'null' => false),
+		'indexes' => array(
+			'id' => array('column' => array('id'), 'unique' => true),
+			'ix_sites_nodes' => array(
+				'column' => array('site_id', 'forum_category_id'),
+				'unique' => true,
+				),
+			),
+		'tableParameters' => array(
+			'charset' => 'utf8',
+			'collate' => 'utf8_unicode_ci',
+			'engine' => 'InnoDb'
+			),
+		);
+
 }
