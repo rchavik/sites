@@ -63,7 +63,25 @@ class Sites {
 			$options['conditions'] = array('Site.id' => $siteId);
 		}
 
-		return ClassRegistry::init('Sites.Site')->find('first', $options);
+		$site_obj = ClassRegistry::init('Sites.Site');
+		$site = $site_obj->find('first', $options);
+		if (empty($site)) {
+			$site = $site_obj->find('first', array(
+				'recursive' => false,
+				'fields' => array('id', 'title', 'tagline', 'theme', 'timezone', 'locale', 'status'),
+				'joins' => array(
+					array(
+						'table' => 'site_domains',
+						'alias' => 'SiteDomain',
+						'conditions' => array(
+							'SiteDomain.site_id = Site.id',
+							),
+						),
+					),
+				'conditions' => array( 'Site.default' => 1 ),
+			));
+		}
+		return $site;
 	}
 
 }

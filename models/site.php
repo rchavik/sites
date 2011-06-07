@@ -2,7 +2,8 @@
 class Site extends SitesAppModel {
 	var $name = 'Site';
 	var $displayField = 'title';
-	var $useDbConfig = 'sites';
+	var $useTable = 'sites';
+	//var $useDbConfig = 'default';
 
 	var $hasMany = array(
 		'SiteDomain' => array(
