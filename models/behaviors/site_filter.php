@@ -32,10 +32,9 @@ class SiteFilterBehavior extends ModelBehavior {
 		}
 		$this->_setupRelationships($model, $this->settings[$model->alias]);
 		$site = Sites::currentSite();
-		//$default = ClassRegistry::init('Sites.Site')->find('first', array('conditions' => array('default' => 1) ) );
 		$sites = array(
 			//$default['Site']['id'],
-			Sites::ALL_SITES,
+			//Sites::ALL_SITES,
 			$site['Site']['id']
 		);
 

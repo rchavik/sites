@@ -63,9 +63,10 @@ class Sites {
 			$options['conditions'] = array('Site.id' => $siteId);
 		}
 
-		$site = ClassRegistry::init('Sites.Site')->find('first', $options);
+		$site_obj = ClassRegistry::init('Sites.Site');
+		$site = $site_obj->find('first', $options);
 		if (empty($site)) {
-			$site = ClassRegistry::init('Sites.Site')->find('first', array(
+			$site = $site_obj->find('first', array(
 				'recursive' => false,
 				'fields' => array('id', 'title', 'tagline', 'theme', 'timezone', 'locale', 'status'),
 				'joins' => array(

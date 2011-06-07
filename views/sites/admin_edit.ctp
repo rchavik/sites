@@ -4,6 +4,9 @@
     <div class="actions">
         <ul>
             <li><?php echo $html->link(__('Back', true), array('action'=>'index')); ?></li>
+            <?php if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) : ?>
+            <li><?php echo $html->link(__('Add Domain', true), array('action' => 'adddomain', $this->data['Site']['id'])); ?></li>
+            <?php endif; ?>
         </ul>
     </div>
 
@@ -41,13 +44,7 @@
 	                        		echo $html->link(__('Delete', true), array('action' => 'deletedomain', $this->data['SiteDomain'][$key]['id']));
 	                        	}
 	                        }
-	                ?>
-	                        <div class="actions">
-        						<ul>
-            						<li><?php echo $html->link(__('Add', true), array('action' => 'adddomain', $this->data['Site']['id'])); ?></li>
-            					</ul>
-            				</div>
-					<?php
+	     
 	                    } else {
 	                    	echo $form->input('SiteDomain.0.id');
 	                    	echo $form->input('SiteDomain.0.domain');

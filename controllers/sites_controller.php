@@ -92,6 +92,7 @@ class SitesController extends SitesAppController {
 			$this->Session->setFlash(__('No Id has been specified!', true));
 			$this->redirect(array('action' => 'index'));
 		} else {
+			$this->Site->update($this->data);
 			$this->Site->SiteDomain->create();
 			$this->data['domain'] = '';
 			$this->data['site_id'] = $id;

@@ -28,42 +28,35 @@ class SitesActivation {
         	$db->execute($db->createSchema($SiteSchema, 'sites_nodes'));
         }
         
+        //Ignore the cache since the tables wont be inside the cache at this point
+        //$db->cacheSources = false;
+        unlink(TMP . 'cache' . DS . 'models/cake_model_default_' . $db->config["database"] . '_list');
+		$db->sources(true);
+        
         //Insert "ALL SITES"
-	
-		$Site = ClassRegistry::init('Sites.Site');
-		$Site->create();
+        $controller->loadModel('Sites.Site');
+		$controller->Site->create();
 		$data = array(
-			'Site' => array(
-				'id' => Sites::ALL_SITES,
-				'title' => 'All Sites',
-				'tagline' => Configure::read('Site.tagline'),
-				'email' => Configure::read('Site.email'),
-				'locale' => Configure::read('Site.locale'),
-				'status' => Configure::read('Site.status'),
-				'timezone' => Configure::read('Site.timezone'),
-				'theme' => Configure::read('Site.theme'),
-				'default' => 1,
-			),
-			'SiteDomain' => array(
-				'site_id' => Sites::ALL_SITES,
-				'domain' => env('HTTP_HOST'),
-			),
-		);
-		$Site->saveAll($data);
-		
-		/*$db->execute($db->rawQuery(
-			'INSERT INTO sites ( id, title, tagline, email, locale, status, timezone, theme, default ) VALUES( 
-			"1",
-			"All Sites",
-			"' . Configure::read('Site.tagline') . '",
-			"' . Configure::read('Site.email') . '",
-			"' . Configure::read('Site.locale') . '",
-			"' . Configure::read('Site.status') . '",
-			"' . Configure::read('Site.timezone') . '",
-			"' . Configure::read('Site.theme') . '",
-			"1"
-			)'
-		));*/
+				'Site' => array(
+					'id' => Sites::ALL_SITES,
+					'title' => 'All Sites',
+					'tagline' => Configure::read('Site.tagline'),
+					'email' => Configure::read('Site.email'),
+					'locale' => Configure::read('Site.locale'),
+					'status' => Configure::read('Site.status'),
+					'timezone' => Configure::read('Site.timezone'),
+					'theme' => Configure::read('Site.theme'),
+					'default' => 1,
+				),
+				'SiteDomain' => array(
+					0 => array(
+						'site_id' => Sites::ALL_SITES,
+						'domain' => $_SERVER["HTTP_HOST"],
+					),
+				),
+			);
+		$controller->Site->saveAll($data);
+
     }
 
     public function beforeDeactivation(&$controller) {
