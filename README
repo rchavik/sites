@@ -1,9 +1,14 @@
 Sites Plugin Version 0.1 alt
 ------------------------------
 
-This plugin enables multi-site support for Croogo (Original statement by the original author "rchavik"). This is an alternative version with a simpler and more comfortable GUI, some bugfixes and the possibility to choose the default site on your own. The default site represents the site that is going to be rendered in case there is no valid domain/subdomain/whatever speecified.
+This plugin enables multi-site support for Croogo (Original statement by the original author "rchavik"). This is an alternative version with a simpler and more comfortable GUI, some bugfixes and the possibility to choose a default site on your own. The default site represents the site that is going to be rendered in case there is no valid domain/subdomain/whatever specified.
 
-Known Bug: On Activation the plugin is intended to create the databases and create a sample-entry. The table-creation works, but the creation of the sibsequent first entry does not. Activating might resolve in a SQL-Error. Hit Refresh several times, and activate the plugin on emore time in order to make it work properly.
+On activation the database is automatically created and a default site is set up. Enjoy!
+
+Known Bugs
+-----------
+
+At the moment, there are no known bugs. Feel free to fork or to notify.
 
 Requirements
 -----------
