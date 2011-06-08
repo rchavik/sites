@@ -5,6 +5,32 @@ This plugin enables multi-site support for Croogo (Original statement by the ori
 
 On activation the database is automatically created and a default site is set up. Enjoy!
 
+Configuration
+-------------
+
+1. Setup a new datasource named 'sites' in croogo database configuration.
+   You can use the same physical database as croogo's, but 'sites' datasource
+   needs to be present since all plugin models will use this.
+
+   Eg:
+
+		class DATABASE_CONFIG {
+			var $default = array(
+				'driver' => 'mysql',
+				'database' => 'crogoo',
+				...
+				);
+
+			var $sites = array(
+				'driver' => 'mysql',
+				'database' => 'crogoo',
+				...
+				);
+		}
+
+2. Activate the plugin
+   Don't forget to cross your fingers.
+
 Known Bugs
 -----------
 
