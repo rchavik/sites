@@ -5,7 +5,7 @@ class SitesActivation {
 		return true;
 	}
 
-    public function onActivation(&$controller) {
+	public function onActivation(&$controller) {
 		App::import('Model', 'CakeSchema');
 		App::import('Model', 'ConnectionManager');
 		App::import('Libs', 'Sites.sites');
@@ -33,33 +33,33 @@ class SitesActivation {
 		$controller->loadModel('Sites.Site');
 		$controller->Site->create();
 		$data = array(
-				'Site' => array(
-					'id' => Sites::ALL_SITES,
-					'title' => 'All Sites',
-					'tagline' => Configure::read('Site.tagline'),
-					'email' => Configure::read('Site.email'),
-					'locale' => Configure::read('Site.locale'),
-					'status' => Configure::read('Site.status'),
-					'timezone' => Configure::read('Site.timezone'),
-					'theme' => Configure::read('Site.theme'),
-					'default' => 1,
+			'Site' => array(
+				'id' => Sites::ALL_SITES,
+				'title' => 'All Sites',
+				'tagline' => Configure::read('Site.tagline'),
+				'email' => Configure::read('Site.email'),
+				'locale' => Configure::read('Site.locale'),
+				'status' => Configure::read('Site.status'),
+				'timezone' => Configure::read('Site.timezone'),
+				'theme' => Configure::read('Site.theme'),
+				'default' => 1,
+			),
+			'SiteDomain' => array(
+				0 => array(
+					'site_id' => Sites::ALL_SITES,
+					'domain' => $_SERVER["HTTP_HOST"],
 				),
-				'SiteDomain' => array(
-					0 => array(
-						'site_id' => Sites::ALL_SITES,
-						'domain' => $_SERVER["HTTP_HOST"],
-					),
-				),
-			);
+			),
+		);
 		$controller->Site->saveAll($data);
 
-    }
+	}
 
-    public function beforeDeactivation(&$controller) {
-        return true;
-    }
+	public function beforeDeactivation(&$controller) {
+		return true;
+	}
 
-    public function onDeactivation(&$controller) {
-    }
+	public function onDeactivation(&$controller) {
+	}
 
 }
