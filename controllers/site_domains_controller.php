@@ -38,7 +38,7 @@ class SiteDomainsController extends SitesAppController {
 
 		$options = array(
 			'conditions' => array(
-				'Site.id >' => Sites::ALL_SITES,
+				//'Site.id >' => Sites::ALL_SITES,
 			),
 		);
 		if (!empty($selected)) {
@@ -69,7 +69,7 @@ class SiteDomainsController extends SitesAppController {
 		}
 		$options = array(
 			'conditions' => array(
-				'Site.id >' => Sites::ALL_SITES,
+				//'Site.id >' => Sites::ALL_SITES,
 			),
 		);
 		$sites = $this->SiteDomain->Site->find('list', $options);
@@ -79,13 +79,13 @@ class SiteDomainsController extends SitesAppController {
 	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for site domain', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->SiteDomain->delete($id)) {
 			$this->Session->setFlash(__('Site domain deleted', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		$this->Session->setFlash(__('Site domain was not deleted', true));
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 }

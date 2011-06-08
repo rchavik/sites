@@ -1,5 +1,15 @@
 <div class="sites view">
-<h2><?php  __('Site');?></h2>
+	<h2><?php  __('Site');?></h2>
+
+	<div class="actions">
+		<ul>
+			<li><?php echo $this->Html->link(__('Edit Site', true), array('action' => 'edit', $site['Site']['id'])); ?> </li>
+			<li><?php echo $this->Html->link(__('Delete Site', true), array('action' => 'delete', $site['Site']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $site['Site']['id'])); ?> </li>
+			<li><?php echo $this->Html->link(__('List Sites', true), array('action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('New Site', true), array('action' => 'add')); ?> </li>
+		</ul>
+	</div>
+
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
@@ -59,13 +69,4 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Site', true), array('action' => 'edit', $site['Site']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete Site', true), array('action' => 'delete', $site['Site']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $site['Site']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Sites', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Site', true), array('action' => 'add')); ?> </li>
-	</ul>
 </div>
