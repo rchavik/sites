@@ -18,14 +18,10 @@ class SitesActivation {
 		$CakeSchema = new CakeSchema();
 		$SiteSchema = new SitesSchema();
 
-		if (!in_array('sites', $tables)) {
-			$db->execute($db->createSchema($SiteSchema, 'sites'));
-		}
-		if (!in_array('site_domains', $tables)) {
-			$db->execute($db->createSchema($SiteSchema, 'site_domains'));
-		}
-		if (!in_array('sites_nodes', $tables)) {
-			$db->execute($db->createSchema($SiteSchema, 'sites_nodes'));
+		foreach ($SiteSchema->tables as $table => $config) {
+			if (!in_array($table, $tables)) {
+				$db->execute($db->createSchema($SiteSchema, $table));
+			}
 		}
 
 		//Ignore the cache since the tables wont be inside the cache at this point
