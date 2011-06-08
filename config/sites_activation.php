@@ -10,7 +10,7 @@ class SitesActivation {
 		App::import('Model', 'ConnectionManager');
 		App::import('Libs', 'Sites.sites');
 		include_once(APP.'plugins'.DS.'sites'.DS.'config'.DS.'schema'.DS.'schema.php');
-		$db = ConnectionManager::getDataSource('default');
+		$db = ConnectionManager::getDataSource('sites');
 
 		//Get all available tables
 		$tables = $db->listSources();
@@ -30,7 +30,7 @@ class SitesActivation {
 
 		//Ignore the cache since the tables wont be inside the cache at this point
 		//$db->cacheSources = false;
-		unlink(TMP . 'cache' . DS . 'models/cake_model_default_' . $db->config["database"] . '_list');
+		@unlink(TMP . 'cache' . DS . 'models/cake_model_default_' . $db->config["database"] . '_list');
 		$db->sources(true);
 
 		//Insert "ALL SITES"
