@@ -26,7 +26,7 @@ class SitesActivation {
 
 		//Ignore the cache since the tables wont be inside the cache at this point
 		//$db->cacheSources = false;
-		@unlink(TMP . 'cache' . DS . 'models/cake_model_default_' . $db->config["database"] . '_list');
+		@unlink(TMP . 'cache' . DS . 'models/cake_model_' . ConnectionManager::getSourceName($db). '_' . $db->config["database"] . '_list');
 		$db->sources(true);
 
 		//Insert "ALL SITES"
