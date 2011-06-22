@@ -4,6 +4,10 @@ class SiteDomain extends SitesAppModel {
 	var $useDbConfig = 'sites';
 	var $useTable = 'site_domains';
 
+	var $actsAs = array(
+		'Containable',
+		);
+
 	var $belongsTo = array(
 		'Site' => array(
 			'className' => 'Sites.Site',

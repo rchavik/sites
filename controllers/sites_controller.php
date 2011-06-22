@@ -49,6 +49,7 @@ class SitesController extends SitesAppController {
 			}
 		}
 		if (empty($this->data)) {
+			$this->Site->contain('SiteDomain');
 			$this->data = $this->Site->read(null, $id);
 		}
 

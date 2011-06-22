@@ -5,6 +5,10 @@ class Site extends SitesAppModel {
 	var $useDbConfig = 'sites';
 	var $useTable = 'sites';
 
+	var $actsAs = array(
+		'Containable',
+		);
+
 	var $hasMany = array(
 		'SiteDomain' => array(
 			'className' => 'Sites.SiteDomain',
