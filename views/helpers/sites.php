@@ -6,9 +6,9 @@ class SitesHelper extends AppHelper {
 		'Html',
 		);
 
-	function afterRender() {
-		if ($view = ClassRegistry::getObject('view')) {
-			echo $this->Html->css('/sites/css/admin_sites');
+	function beforeRender() {
+		if (isset($this->params['admin'])) {
+			echo $this->Html->css('/sites/css/admin_sites', null, array('inline' => false));
 		}
 	}
 
