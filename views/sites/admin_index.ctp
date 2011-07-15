@@ -30,6 +30,7 @@
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $site['Site']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $site['Site']['id'])); ?>
+			<?php echo $this->Html->link(__('Publish All', true), array('action' => 'publish_nodes', $site['Site']['id']), null, sprintf(__('Publish all existing published nodes to site "%s"?', true), $site['Site']['title'])); ?>
 		</td>
 		<td>
 			<?php

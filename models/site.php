@@ -36,4 +36,20 @@ class Site extends SitesAppModel {
 			),
 		);
 
+	function publish_all($siteId) {
+		$this->Node->Behaviors->attach('Containable');
+		$this->Node->disableFilter();
+		$nodes = $this->Node->find('all', array(
+			'contain' => array('Site' => array('id')),
+			'fields' => 'id',
+			'conditions' => array(
+				'Node.status' => true,
+				)
+			));
+		foreach ($nodes as &$node) {
+			$node['Site']['Site'] = array_unique(Set::merge($node['Site']['Site'], array($siteId)));
+		}
+		return $this->Node->saveAll($nodes);
+	}
+
 }
