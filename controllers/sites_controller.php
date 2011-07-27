@@ -129,4 +129,20 @@ class SitesController extends SitesAppController {
 		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
+	function _writeSetting($value) {
+		$this->Site->updateAll(array('status' => $value));
+		$this->loadModel('Setting');
+		$this->Setting->write('Site.status', $value);
+	}
+
+	function admin_enable() {
+		$this->_writeSetting(true);
+		$this->redirect(array('action' => 'index', 'admin' => true));
+	}
+
+	function admin_disable() {
+		$this->_writeSetting(false);
+		$this->redirect(array('action' => 'index', 'admin' => true));
+	}
+
 }

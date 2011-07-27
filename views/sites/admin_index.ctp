@@ -3,6 +3,8 @@
 	<div class="actions">
 		<ul>
 			<li><?php echo $this->Html->link(__('New Site', true), array('action' => 'add')); ?></li>
+			<li><?php echo $this->Html->link(__('Enable All Sites', true), array('action' => 'enable'), null, 'Enable all sites?'); ?></li>
+			<li><?php echo $this->Html->link(__('Disable All Sites', true), array('action' => 'disable'), null, 'Disable all sites?'); ?></li>
 		</ul>
 	</div>
 	<table cellpadding="0" cellspacing="0">
@@ -10,6 +12,7 @@
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('title');?></th>
 			<th><?php echo $this->Paginator->sort('theme');?></th>
+			<th><?php echo $this->Paginator->sort('status');?></th>
 			<th><?php __('Actions');?></th>
 			<th><?php __('Default');?></th>
 	</tr>
@@ -25,6 +28,7 @@
 		<td><?php echo $site['Site']['id']; ?>&nbsp;</td>
 		<td><?php echo $site['Site']['title']; ?>&nbsp;</td>
 		<td><?php echo $site['Site']['theme']; ?>&nbsp;</td>
+		<td><?php echo $site['Site']['status']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View Domains', true), array('controller' => 'sites', 'action' => 'edit', $site['Site']['id'], '#site-domains')); ?>
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $site['Site']['id'])); ?>
