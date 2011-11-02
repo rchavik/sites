@@ -9,7 +9,7 @@ echo $this->Form->create('filter', array(
 		),
 	));
 
-echo $this->Form->input('Site', array('empty' => __d('sites', '-- No site selected --', true)));
+echo $this->Form->input('Site', array('empty' => __d('sites', '-- No site selected --')));
 echo $this->Form->end();
 
 echo $this->Html->scriptBlock("

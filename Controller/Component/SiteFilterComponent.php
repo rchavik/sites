@@ -2,7 +2,7 @@
 
 App::import('Libs', 'Sites.sites');
 
-class SiteFilterComponent extends Object {
+class SiteFilterComponent extends Component {
 
 	var $controller = false;
 

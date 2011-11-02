@@ -2,7 +2,7 @@
 
 App::import('Libs', 'Sites.sites');
 
-class MultisiteComponent extends Object {
+class MultisiteComponent extends Component {
 
 	var $controller = false;
 

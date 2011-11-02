@@ -3,9 +3,9 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $this->Html->link(__('Back', true), array('action'=>'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Back'), array('action'=>'index')); ?></li>
 			<?php if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) : ?>
-			<li><?php echo $this->Html->link(__('Add Domain', true), array('action' => 'adddomain', $this->data['Site']['id'])); ?></li>
+			<li><?php echo $this->Html->link(__('Add Domain'), array('action' => 'adddomain', $this->data['Site']['id'])); ?></li>
 			<?php endif; ?>
 		</ul>
 	</div>
@@ -14,8 +14,8 @@
 	<fieldset>
 		<div class="tabs">
 			<ul>
-				<li><a href="#site-basic"><span><?php __('Settings'); ?></span></a></li>
-				<li><a href="#site-domains"><span><?php __('Domains'); ?></span></a></li>
+				<li><a href="#site-basic"><span><?php echo __('Settings'); ?></span></a></li>
+				<li><a href="#site-domains"><span><?php echo __('Domains'); ?></span></a></li>
 				<?php echo $this->Layout->adminTabs(); ?>
 			</ul>
 
@@ -41,7 +41,7 @@
 						echo $this->Form->input('SiteDomain.'.$key.'.id');
 						echo $this->Form->input('SiteDomain.'.$key.'.domain');
 						if (count($this->data['SiteDomain']) > 1) {
-							echo $this->Html->link(__('Delete', true), array('action' => 'deletedomain', $this->data['SiteDomain'][$key]['id']));
+							echo $this->Html->link(__('Delete'), array('action' => 'deletedomain', $this->data['SiteDomain'][$key]['id']));
 						}
 					}
 
