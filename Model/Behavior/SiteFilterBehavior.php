@@ -75,19 +75,29 @@ class SiteFilterBehavior extends ModelBehavior {
 			case 'hasAndBelongsToMany':
 			default:
 				$with = $model->{$relation}['Site']['with'];
+				if (strpos($with, '.') !== false) {
+					list($pluginName, $with) = pluginSplit($with);
+				}
 				$joinModel = $model->{$with};
 				$ds = $joinModel->getDataSource();
 				$associationForeignKey = $model->{$relation}['Site']['associationForeignKey'];
 
 				$joins[] = array(
 					'type' => 'LEFT',
-					'table' => $ds->fullTableName($joinModel),
+					'table' => $ds->fullTableName($joinModel, true, true),
 					'alias' => $joinModel->alias,
 					'conditions' => array(
 						"{$model->alias}.{$model->primaryKey} = {$joinModel->alias}.$foreignKey",
 						),
 					);
-				$query['conditions'][$joinModel->alias . '.' . $associationForeignKey] = $sites;
+				if (is_string($query['conditions'])) {
+					$query['conditions'] = array(
+						$query['conditions'],
+						$joinModel->alias . '.' . $associationForeignKey => $sites,
+						);
+				} else {
+					$query['conditions'][$joinModel->alias . '.' . $associationForeignKey] = $sites;
+				}
 				break;
 			}
 		}

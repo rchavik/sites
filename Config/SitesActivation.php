@@ -8,8 +8,8 @@ class SitesActivation {
 	public function onActivation(&$controller) {
 		App::import('Model', 'CakeSchema');
 		App::import('Model', 'ConnectionManager');
-		App::import('Libs', 'Sites.sites');
-		include_once(APP.'plugins'.DS.'sites'.DS.'config'.DS.'schema'.DS.'schema.php');
+		App::uses('Sites', 'Sites.Lib');
+		include_once(APP.'Plugin'.DS.'Sites'.DS.'Config'.DS.'Schema'.DS.'schema.php');
 		$db = ConnectionManager::getDataSource('sites');
 
 		//Get all available tables
@@ -27,7 +27,7 @@ class SitesActivation {
 		//Ignore the cache since the tables wont be inside the cache at this point
 		//$db->cacheSources = false;
 		@unlink(TMP . 'cache' . DS . 'models/cake_model_' . ConnectionManager::getSourceName($db). '_' . $db->config["database"] . '_list');
-		$db->sources(true);
+		$db->listSources();
 
 		//Insert "ALL SITES"
 		$controller->loadModel('Sites.Site');
@@ -51,6 +51,7 @@ class SitesActivation {
 				),
 			),
 		);
+		CakePlugin::load('Sites');
 		$controller->Site->saveAll($data);
 
 	}

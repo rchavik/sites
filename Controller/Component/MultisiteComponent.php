@@ -1,6 +1,6 @@
 <?php
 
-App::import('Libs', 'Sites.sites');
+App::uses('Sites', 'Sites.Lib');
 
 class MultisiteComponent extends Component {
 

@@ -2,7 +2,6 @@
 class Site extends SitesAppModel {
 	var $name = 'Site';
 	var $displayField = 'title';
-	var $useDbConfig = 'sites';
 	var $useTable = 'sites';
 
 	var $actsAs = array(
@@ -47,7 +46,11 @@ class Site extends SitesAppModel {
 				)
 			));
 		foreach ($nodes as &$node) {
-			$node['Site']['Site'] = array_unique(Set::merge($node['Site']['Site'], array($siteId)));
+			if (isset($node['Site']['Site'])) {
+				$node['Site']['Site'] = array_unique(Set::merge($node['Site']['Site'], array($siteId)));
+			} else {
+				$node['Site']['Site'] = array($siteId);
+			}
 		}
 		return $this->Node->saveAll($nodes);
 	}

@@ -121,8 +121,8 @@ class SitesController extends SitesAppController {
 			$this->Session->setFlash(__('Invalid id for site'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
-		if ($this->Site->publish_all($id)) {
-			$this->Session->setFlash(__('All nodes has been published for this site'));
+		if ($this->Site->publish_all($id, $this->Site->Node)) {
+			$this->Session->setFlash(__('All nodes has been published for this site %d', $id));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		$this->Session->setFlash(__('Unable to publish existing nodes'));

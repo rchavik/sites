@@ -1,7 +1,6 @@
 <?php
 class SiteDomain extends SitesAppModel {
 	var $name = 'SiteDomain';
-	var $useDbConfig = 'sites';
 	var $useTable = 'site_domains';
 
 	var $actsAs = array(
