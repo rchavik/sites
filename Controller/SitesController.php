@@ -136,12 +136,12 @@ class SitesController extends SitesAppController {
 	}
 
 	function admin_enable() {
-		$this->_writeSetting(true);
+		$this->_writeSetting(1);
 		$this->redirect(array('action' => 'index', 'admin' => true));
 	}
 
 	function admin_disable() {
-		$this->_writeSetting(false);
+		$this->_writeSetting(0);
 		$this->redirect(array('action' => 'index', 'admin' => true));
 	}
 

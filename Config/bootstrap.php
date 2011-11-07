@@ -38,3 +38,5 @@ Croogo::hookAdminMenu('Sites');
 
 Croogo::hookAdminTab('Nodes/admin_add', 'Sites', 'sites.sites_selection');
 Croogo::hookAdminTab('Nodes/admin_edit', 'Sites', 'sites.sites_selection');
+Croogo::hookAdminTab('Attachments/admin_add', 'Sites', 'sites.sites_selection');
+Croogo::hookAdminTab('Attachments/admin_edit', 'Sites', 'sites.sites_selection');
