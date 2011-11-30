@@ -6,6 +6,7 @@ class SitesActivation {
 	}
 
 	public function onActivation(&$controller) {
+		CakePlugin::load('Sites');
 		App::import('Model', 'CakeSchema');
 		App::import('Model', 'ConnectionManager');
 		App::uses('Sites', 'Sites.Lib');
@@ -51,9 +52,19 @@ class SitesActivation {
 				),
 			),
 		);
-		CakePlugin::load('Sites');
-		$controller->Site->saveAll($data);
 
+		$controller->Site->id = Sites::ALL_SITES;
+		if ($controller->Site->exists()) {
+			$count = $controller->Site->SiteDomain->find('count', array(
+				'conditions' => array(
+					'SiteDomain.site_id' => Sites::ALL_SITES,
+					)
+				));
+			if ($count > 0) {
+				unset($data['SiteDomain']);
+			}
+			$controller->Site->saveAll($data);
+		}
 	}
 
 	public function beforeDeactivation(&$controller) {
