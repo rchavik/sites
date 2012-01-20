@@ -1,5 +1,7 @@
 <?php
 
+App::uses('Sites', 'Sites.Lib');
+
 class SiteFilterBehavior extends ModelBehavior {
 
 	function setup(&$model, $config = array()) {
