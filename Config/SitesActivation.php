@@ -63,8 +63,8 @@ class SitesActivation {
 			if ($count > 0) {
 				unset($data['SiteDomain']);
 			}
-			$controller->Site->saveAll($data);
 		}
+		$controller->Site->saveAll($data);
 	}
 
 	public function beforeDeactivation(&$controller) {
