@@ -8,7 +8,7 @@ Croogo::hookBehavior('Node', 'Sites.SiteFilter', array(
 				'with' => 'Sites.SitesNode',
 				'foreignKey' => 'node_id',
 				'associationForeignKey' => 'site_id',
-				'unique' => true,
+				'unique' => 'keepExisting',
 				),
 			),
 		),

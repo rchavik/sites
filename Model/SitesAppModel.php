@@ -1,5 +1,9 @@
 <?php
 
 class SitesAppModel extends AppModel {
-	var $useDbConfig = 'sites';
+
+	public $useDbConfig = 'sites';
+
+	public $recursive = -1;
+
 }
