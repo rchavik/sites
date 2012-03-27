@@ -84,6 +84,11 @@ class SiteFilterBehavior extends ModelBehavior {
 				$ds = $joinModel->getDataSource();
 				$associationForeignKey = $model->{$relation}['Site']['associationForeignKey'];
 
+				$currentJoins = Set::extract('{n}.alias', $joins);
+				if (!empty($currentJoins) && in_array($joinModel->alias, $currentJoins)) {
+					break;
+				}
+
 				$joins[] = array(
 					'type' => 'LEFT',
 					'table' => $ds->fullTableName($joinModel, true, true),
