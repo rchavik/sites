@@ -7,7 +7,7 @@ class SiteFilterBehavior extends ModelBehavior {
 	function setup(&$model, $config = array()) {
 		$config = Set::merge(array(
 			'relationship' => false,
-			'joins' => false,
+			'joins' => array(),
 			'enabled' => true,
 			'filter' => true,
 			), $config);

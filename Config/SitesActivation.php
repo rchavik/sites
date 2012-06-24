@@ -2,6 +2,9 @@
 
 class SitesActivation {
 	public function beforeActivation(&$controller) {
+		if (!isset($_SERVER['HTTP_HOST'])) {
+			throw new CakeException('environment variable HTTP_HOST missing. Please use the Extensions plugin from the backend to activate this plugin.');
+		}
 		return true;
 	}
 
