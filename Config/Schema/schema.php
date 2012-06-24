@@ -4,14 +4,14 @@ class SitesSchema extends CakeSchema {
 
 	var $name = 'Sites';
 
-	function before($event = array()) {
+	public function before($event = array()) {
 		return true;
 	}
 
-	function after($event = array()) {
+	public function after($event = array()) {
 	}
 
-	var $sites = array(
+	public $sites = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'title' => array('type' => 'string', 'length' => 255, 'null' => true),
 		'slug' => array('type' => 'string', 'length' => 255, 'null' => true),
@@ -41,7 +41,7 @@ class SitesSchema extends CakeSchema {
 		'default' => array('type' => 'integer', 'null' => true, 'default' => 0),
 		);
 
-	var $site_domains = array(
+	public $site_domains = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'site_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'domain' => array('type' => 'string', 'length' => 255, 'null' => false),
@@ -63,7 +63,7 @@ class SitesSchema extends CakeSchema {
 			),
 		);
 
-	var $sites_nodes = array(
+	public $sites_nodes = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'site_id' => array('type' => 'integer', 'null' => false),
 		'node_id' => array('type' => 'integer', 'null' => 'false'),
@@ -83,12 +83,52 @@ class SitesSchema extends CakeSchema {
 			),
 		);
 
-	var $sites_forum_categories = array(
+	public $sites_blocks = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'site_id' => array('type' => 'integer', 'null' => false),
+		'block_id' => array('type' => 'integer', 'null' => 'false'),
+		'created_by' => array('type' => 'string', 'length' => 36),
+		'created' => array('type' => 'datetime', 'null' => true),
+		'indexes' => array(
+			'id' => array('column' => array('id'), 'unique' => true),
+			'ix_sites_blocks' => array(
+				'column' => array('site_id', 'block_id'),
+				'unique' => true,
+				),
+			),
+		'tableParameters' => array(
+			'charset' => 'utf8',
+			'collate' => 'utf8_unicode_ci',
+			'engine' => 'InnoDb'
+			),
+		);
+
+	public $sites_links = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'site_id' => array('type' => 'integer', 'null' => false),
+		'link_id' => array('type' => 'integer', 'null' => 'false'),
+		'created_by' => array('type' => 'string', 'length' => 36),
+		'created' => array('type' => 'datetime', 'null' => true),
+		'indexes' => array(
+			'id' => array('column' => array('id'), 'unique' => true),
+			'ix_sites_links' => array(
+				'column' => array('site_id', 'link_id'),
+				'unique' => true,
+				),
+			),
+		'tableParameters' => array(
+			'charset' => 'utf8',
+			'collate' => 'utf8_unicode_ci',
+			'engine' => 'InnoDb'
+			),
+		);
+
+	public $sites_forum_categories = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'site_id' => array('type' => 'integer', 'null' => false),
 		'forum_category_id' => array('type' => 'integer', 'null' => 'false'),
 		'created_by' => array('type' => 'string', 'length' => 36),
-		'created' => array('type' => 'datetime', 'null' => false),
+		'created' => array('type' => 'datetime', 'null' => true),
 		'indexes' => array(
 			'id' => array('column' => array('id'), 'unique' => true),
 			'ix_sites_nodes' => array(
