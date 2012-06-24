@@ -36,6 +36,7 @@
 			<?php echo $this->Html->link(__('Delete'), array('action' => 'delete', $site['Site']['id']), null, sprintf(__('Are you sure you want to delete # %s?'), $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('Publish All Nodes'), array('action' => 'publish_nodes', $site['Site']['id']), null, sprintf(__('Publish all existing published nodes to site "%s"?'), $site['Site']['title'])); ?>
 			<?php echo $this->Html->link(__('Publish All Blocks'), array('action' => 'publish_blocks', $site['Site']['id']), null, sprintf(__('Publish all existing published blocks to site "%s"?'), $site['Site']['title'])); ?>
+			<?php echo $this->Html->link(__('Publish All Links'), array('action' => 'publish_links', $site['Site']['id']), null, sprintf(__('Publish all existing published links to site "%s"?'), $site['Site']['title'])); ?>
 		</td>
 		<td>
 			<?php
