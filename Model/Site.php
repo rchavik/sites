@@ -33,26 +33,43 @@ class Site extends SitesAppModel {
 			'dependent' => true,
 			'with' => 'Sites.SitesNode',
 			),
+		'Block' => array(
+			'className' => 'Block',
+			'joinTable' => 'sites_blocks',
+			'foreignKey' => 'site_id',
+			'associationForeignKey' => 'block_id',
+			'dependent' => true,
+			'with' => 'Sites.SitesBlock',
+			),
+		'Link' => array(
+			'className' => 'Link',
+			'joinTable' => 'sites_links',
+			'foreignKey' => 'site_id',
+			'associationForeignKey' => 'link_id',
+			'dependent' => true,
+			'with' => 'Sites.SitesLink',
+			),
 		);
 
-	function publish_all($siteId) {
-		$this->Node->Behaviors->attach('Containable');
-		$this->Node->disableFilter();
-		$nodes = $this->Node->find('all', array(
+	function publish_all($siteId, &$model) {
+		$model->Behaviors->attach('Containable');
+		$model->disableFilter();
+		$conditions = array(
 			'contain' => array('Site' => array('id')),
 			'fields' => 'id',
 			'conditions' => array(
-				'Node.status' => true,
+				$model->alias . '.status' => true,
 				)
-			));
-		foreach ($nodes as &$node) {
-			if (isset($node['Site']['Site'])) {
-				$node['Site']['Site'] = array_unique(Set::merge($node['Site']['Site'], array($siteId)));
+			);
+		$rows = $model->find('all', $conditions);
+		foreach ($rows as &$row) {
+			if (isset($row['Site']['Site'])) {
+				$row['Site']['Site'] = array_unique(Set::merge($row['Site']['Site'], array($siteId)));
 			} else {
-				$node['Site']['Site'] = array($siteId);
+				$row['Site']['Site'] = array($siteId);
 			}
 		}
-		return $this->Node->saveAll($nodes);
+		return $model->saveAll($rows);
 	}
 
 }

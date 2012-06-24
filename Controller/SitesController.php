@@ -129,6 +129,19 @@ class SitesController extends SitesAppController {
 		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
+	function admin_publish_blocks($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for site'));
+			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+		}
+		if ($this->Site->publish_all($id, $this->Site->Block)) {
+			$this->Session->setFlash(__('All blocks has been published for this site %d', $id));
+			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+		}
+		$this->Session->setFlash(__('Unable to publish existing blocks'));
+		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+	}
+
 	function _writeSetting($value) {
 		$this->Site->updateAll(array('status' => $value));
 		$this->loadModel('Setting');
