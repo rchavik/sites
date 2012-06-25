@@ -6,6 +6,8 @@ class Sites {
 
 	private static $_site = array();
 
+	protected static $_sessionKey = 'Sites.current';
+
 	public function &getInstance() {
 		static $instance = null;
 		if (! $instance) {
@@ -29,19 +31,15 @@ class Sites {
 
 	public function currentSite($siteId = null) {
 		$_this =& Sites::getInstance();
-		if (empty(self::$_site) || $siteId !== null) {
-			self::$_site = $_this->_getSite($siteId);
-		} elseif (empty(self::$_site)) {
-			self::$_site = $_this->_getSite($siteId);
-		}
+		self::$_site = $_this->_getSite($siteId);
 		$_this->_overrideSetting(array(
 			'title', 'tagline', 'theme', 'timezone', 'locale', 'status',
 			));
-
+		CakeSession::write(self::$_sessionKey, self::$_site);
 		return self::$_site;
 	}
 
-	function _getSite($siteId) {
+	function _getSite($siteId = null) {
 		$Site = ClassRegistry::init('Sites.Site');
 		$SiteDomain = $Site->SiteDomain;
 		$siteDomainTable = $SiteDomain->getDataSource()->fullTableName($SiteDomain, true, true);
@@ -81,6 +79,11 @@ class Sites {
 					),
 				'conditions' => array( 'Site.default' => 1 ),
 			));
+		}
+		if ($siteId === null && CakeSession::check(self::$_sessionKey) && $active = CakeSession::read(self::$_sessionKey)) {
+			if ($site['Site']['id'] == Sites::ALL_SITES) {
+				$site = $active;
+			}
 		}
 		return $site;
 	}
