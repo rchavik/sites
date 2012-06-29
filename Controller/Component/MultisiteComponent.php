@@ -45,7 +45,7 @@ class MultisiteComponent extends Component {
 	function initialize(&$controller, $settings = array()) {
 		if (1 == $controller->Auth->user('role_id') && isset($controller->params['admin'])) {
 			$Model =& $controller->{$controller->modelClass};
-			if (property_exists($Model->Behaviors, 'SiteFilter')) {
+			if ($Model->Behaviors->attached('SiteFilter')) {
 				$Model->Behaviors->SiteFilter->disableFilter($Model);
 			}
 		}
