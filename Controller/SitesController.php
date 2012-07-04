@@ -21,9 +21,9 @@ class SitesController extends SitesAppController {
 	}
 
 	function admin_add() {
-		if (!empty($this->data)) {
+		if (!empty($this->request->data)) {
 			$this->Site->create();
-			if ($this->Site->saveAll($this->data)) {
+			if ($this->Site->saveAll($this->request->data)) {
 				$this->Session->setFlash(__('The site has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -36,21 +36,21 @@ class SitesController extends SitesAppController {
 	}
 
 	function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
+		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid site'));
 			$this->redirect(array('action' => 'index'));
 		}
-		if (!empty($this->data)) {
-			if ($this->Site->saveAll($this->data)) {
+		if (!empty($this->request->data)) {
+			if ($this->Site->saveAll($this->request->data)) {
 				$this->Session->setFlash(__('The site has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The site could not be saved. Please, try again.'));
 			}
 		}
-		if (empty($this->data)) {
+		if (empty($this->request->data)) {
 			$this->Site->contain('SiteDomain');
-			$this->data = $this->Site->read(null, $id);
+			$this->request->data = $this->Site->read(null, $id);
 		}
 
 		$this->set('title_for_layout', __('Edit Site'));
@@ -74,15 +74,15 @@ class SitesController extends SitesAppController {
 			$this->Session->setFlash(__('Setting default failed.'));
 			$this->redirect(array('action' => 'index'));
 		} else {
-			$this->data = $this->Site->find('all') ;
-			foreach ($this->data as $key => $site) {
+			$this->request->data = $this->Site->find('all') ;
+			foreach ($this->request->data as $key => $site) {
 				if ($site['Site']['id'] == $id) {
-					$this->data[$key]['Site']['default'] = 1;
+					$this->request->data[$key]['Site']['default'] = 1;
 				} else {
-					$this->data[$key]['Site']['default'] = 0;
+					$this->request->data[$key]['Site']['default'] = 0;
 				}
 			}
-			$this->Site->saveAll($this->data);
+			$this->Site->saveAll($this->request->data);
 			$this->Session->setFlash(__('Site has been set as default.'));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -93,11 +93,11 @@ class SitesController extends SitesAppController {
 			$this->Session->setFlash(__('No Id has been specified!'));
 			$this->redirect(array('action' => 'index'));
 		} else {
-			$this->Site->update($this->data);
+			$this->Site->update($this->request->data);
 			$this->Site->SiteDomain->create();
-			$this->data['domain'] = '';
-			$this->data['site_id'] = $id;
-			$this->Site->SiteDomain->save($this->data);
+			$this->request->data['domain'] = '';
+			$this->request->data['site_id'] = $id;
+			$this->Site->SiteDomain->save($this->request->data);
 			$this->Session->setFlash(__('A new domain has been successfully added. You may now enter the desired URL.'));
 			$this->redirect(array('action' => 'edit', $id, '#site-domains'));
 		}
