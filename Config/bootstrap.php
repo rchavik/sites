@@ -60,7 +60,11 @@ Croogo::hookBehavior('ForumCategory', 'Sites.SiteFilter', array(
 Croogo::hookComponent('ForumCategories', 'Sites.SiteFilter');
 endif;
 
-Croogo::hookComponent('*', 'Sites.Multisite');
+Croogo::hookComponent('*', array(
+	'Sites.Multisite' => array(
+		'priority' => 5,
+		)
+	));
 
 Croogo::hookHelper('Nodes', 'Sites.Sites');
 

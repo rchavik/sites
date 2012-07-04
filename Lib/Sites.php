@@ -81,7 +81,8 @@ class Sites {
 			));
 		}
 		if ($siteId === null && CakeSession::check(self::$_sessionKey) && $active = CakeSession::read(self::$_sessionKey)) {
-			if ($site['Site']['id'] == Sites::ALL_SITES) {
+			$found = $SiteDomain->find('count', array('SiteDomain.domain' => env('HTTP_HOST')));
+			if ($found == 0) {
 				$site = $active;
 			}
 		}
