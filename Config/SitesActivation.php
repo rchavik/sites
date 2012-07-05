@@ -2,6 +2,12 @@
 
 class SitesActivation {
 	public function beforeActivation(&$controller) {
+		if (defined('FULL_BASE_URL')) {
+			$parsed = parse_url(FULL_BASE_URL);
+			if (!empty($parsed['host']) && $parsed['host'] !== 'localhost') {
+				$_SERVER['HTTP_HOST'] = $parsed['host'];
+			}
+		}
 		if (!isset($_SERVER['HTTP_HOST'])) {
 			throw new CakeException('environment variable HTTP_HOST missing. Please use the Extensions plugin from the backend to activate this plugin.');
 		}
