@@ -1,5 +1,7 @@
 <?php
 
+App::uses('CakeSession', 'Model/Datasource');
+
 class Sites {
 
 	const ALL_SITES = 1;
