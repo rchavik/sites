@@ -30,7 +30,7 @@
 		<td><?php echo $site['Site']['theme']; ?>&nbsp;</td>
 		<td><?php echo $site['Site']['status']; ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View Domains'), array('controller' => 'sites', 'action' => 'edit', $site['Site']['id'], '#site-domains')); ?>
+			<?php echo $this->Html->link(__('View Domains'), array('controller' => 'sites', 'action' => 'edit', $site['Site']['id'], '#' => 'site-domains')); ?>
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $site['Site']['id'])); ?>
 			<?php echo $this->Html->link(__('Delete'), array('action' => 'delete', $site['Site']['id']), null, sprintf(__('Are you sure you want to delete # %s?'), $site['Site']['id'])); ?>

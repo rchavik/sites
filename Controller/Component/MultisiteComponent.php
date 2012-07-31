@@ -4,17 +4,18 @@ App::uses('Sites', 'Sites.Lib');
 
 class MultisiteComponent extends Component {
 
-	var $controller = false;
+	public $controller = false;
 
-	function _setLookupFields(&$controller) {
+	protected function _setLookupFields(Controller $controller) {
 		$controller->set('sites', ClassRegistry::init('Sites.Site')->find('list'));
 	}
 
-	/** _setupCache
-	 *  Differentiate croogo's cache prefix so that sites have their own cache
-	 *  List of cache names are from croogo_bootstrap.php
-	 */
-	function _setupCache(&$controller) {
+/**
+ * _setupCache
+ *  Differentiate croogo's cache prefix so that sites have their own cache
+ *  List of cache names are from croogo_bootstrap.php
+ */
+	public function _setupCache(Controller $controller) {
 		$configured = Cache::configured();
 		$croogoCacheNames = array(
 			// components
@@ -37,12 +38,12 @@ class MultisiteComponent extends Component {
 		}
 	}
 
-	function startup(&$controller) {
+	public function startup(Controller $controller) {
 		$this->_setLookupFields($controller);
 		$this->_setupCache($controller);
 	}
 
-	function initialize(&$controller, $settings = array()) {
+	public function initialize(Controller $controller, $settings = array()) {
 		if (1 == $controller->Auth->user('role_id') && isset($controller->params['admin'])) {
 			$Model =& $controller->{$controller->modelClass};
 			if ($Model->Behaviors->attached('SiteFilter')) {

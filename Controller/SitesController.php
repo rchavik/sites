@@ -1,18 +1,20 @@
 <?php
+
 class SitesController extends SitesAppController {
 
-	var $name = 'Sites';
+	public $name = 'Sites';
 
-	var $helpers = array(
+	public $uses = array('Sites.Site');
+
+	public $helpers = array(
 		'Sites.Sites',
 		);
 
-	function admin_index() {
-		$this->Site->recursive = 0;
+	public function admin_index() {
 		$this->set('sites', $this->paginate());
 	}
 
-	function admin_view($id = null) {
+	public function admin_view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid site'));
 			$this->redirect(array('action' => 'index'));
@@ -20,7 +22,7 @@ class SitesController extends SitesAppController {
 		$this->set('site', $this->Site->read(null, $id));
 	}
 
-	function admin_add() {
+	public function admin_add() {
 		if (!empty($this->request->data)) {
 			$this->Site->create();
 			if ($this->Site->saveAll($this->request->data)) {
@@ -35,7 +37,7 @@ class SitesController extends SitesAppController {
 		$this->render('admin_edit');
 	}
 
-	function admin_edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid site'));
 			$this->redirect(array('action' => 'index'));
@@ -56,7 +58,7 @@ class SitesController extends SitesAppController {
 		$this->set('title_for_layout', __('Edit Site'));
 	}
 
-	function admin_delete($id = null) {
+	public function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for site'));
 			$this->redirect(array('action'=>'index'));
@@ -69,7 +71,7 @@ class SitesController extends SitesAppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
-	function admin_setdefault($id = null) {
+	public function admin_setdefault($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Setting default failed.'));
 			$this->redirect(array('action' => 'index'));
@@ -88,22 +90,21 @@ class SitesController extends SitesAppController {
 		}
 	}
 
-	function admin_adddomain($id = null) {
+	public function admin_adddomain($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('No Id has been specified!'));
 			$this->redirect(array('action' => 'index'));
 		} else {
-			$this->Site->update($this->request->data);
 			$this->Site->SiteDomain->create();
 			$this->request->data['domain'] = '';
 			$this->request->data['site_id'] = $id;
 			$this->Site->SiteDomain->save($this->request->data);
 			$this->Session->setFlash(__('A new domain has been successfully added. You may now enter the desired URL.'));
-			$this->redirect(array('action' => 'edit', $id, '#site-domains'));
+			$this->redirect(array('action' => 'edit', $id, '#' => 'site-domains'));
 		}
 	}
 
-	function admin_deletedomain($id = null) {
+	public function admin_deletedomain($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for site domain'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -116,7 +117,7 @@ class SitesController extends SitesAppController {
 		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
-	function admin_publish_nodes($id = null) {
+	public function admin_publish_nodes($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for site'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -129,7 +130,7 @@ class SitesController extends SitesAppController {
 		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
-	function admin_publish_blocks($id = null) {
+	public function admin_publish_blocks($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for site'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -142,7 +143,7 @@ class SitesController extends SitesAppController {
 		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
-	function admin_publish_links($id = null) {
+	public function admin_publish_links($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for site'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -155,18 +156,18 @@ class SitesController extends SitesAppController {
 		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
-	function _writeSetting($value) {
+	public function _writeSetting($value) {
 		$this->Site->updateAll(array('status' => $value));
-		$this->loadModel('Setting');
+		$this->loadModel('Settings.Setting');
 		$this->Setting->write('Site.status', $value);
 	}
 
-	function admin_enable() {
+	public function admin_enable() {
 		$this->_writeSetting(1);
 		$this->redirect(array('action' => 'index', 'admin' => true));
 	}
 
-	function admin_disable() {
+	public function admin_disable() {
 		$this->_writeSetting(0);
 		$this->redirect(array('action' => 'index', 'admin' => true));
 	}

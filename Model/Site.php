@@ -1,14 +1,15 @@
 <?php
 class Site extends SitesAppModel {
-	var $name = 'Site';
-	var $displayField = 'title';
-	var $useTable = 'sites';
 
-	var $actsAs = array(
+	public $displayField = 'title';
+
+	public $useTable = 'sites';
+
+	public $actsAs = array(
 		'Containable',
 		);
 
-	var $hasMany = array(
+	public $hasMany = array(
 		'SiteDomain' => array(
 			'className' => 'Sites.SiteDomain',
 			'foreignKey' => 'site_id',
@@ -24,7 +25,7 @@ class Site extends SitesAppModel {
 			),
 		);
 
-	var $hasAndBelongsToMany = array(
+	public $hasAndBelongsToMany = array(
 		'Node' => array(
 			'className' => 'Node',
 			'joinTable' => 'sites_nodes',
@@ -32,7 +33,7 @@ class Site extends SitesAppModel {
 			'associationForeignKey' => 'node_id',
 			'dependent' => true,
 			'with' => 'Sites.SitesNode',
-			),
+		),
 		'Block' => array(
 			'className' => 'Block',
 			'joinTable' => 'sites_blocks',
@@ -40,7 +41,7 @@ class Site extends SitesAppModel {
 			'associationForeignKey' => 'block_id',
 			'dependent' => true,
 			'with' => 'Sites.SitesBlock',
-			),
+		),
 		'Link' => array(
 			'className' => 'Link',
 			'joinTable' => 'sites_links',
@@ -48,10 +49,10 @@ class Site extends SitesAppModel {
 			'associationForeignKey' => 'link_id',
 			'dependent' => true,
 			'with' => 'Sites.SitesLink',
-			),
-		);
+		),
+	);
 
-	function publish_all($siteId, &$model) {
+	public function publish_all($siteId, &$model) {
 		$model->Behaviors->attach('Containable');
 		$model->disableFilter();
 		$conditions = array(
