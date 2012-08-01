@@ -27,7 +27,7 @@ class Site extends SitesAppModel {
 
 	public $hasAndBelongsToMany = array(
 		'Node' => array(
-			'className' => 'Node',
+			'className' => 'Nodes.Node',
 			'joinTable' => 'sites_nodes',
 			'foreignKey' => 'site_id',
 			'associationForeignKey' => 'node_id',
@@ -35,7 +35,7 @@ class Site extends SitesAppModel {
 			'with' => 'Sites.SitesNode',
 		),
 		'Block' => array(
-			'className' => 'Block',
+			'className' => 'Regions.Block',
 			'joinTable' => 'sites_blocks',
 			'foreignKey' => 'site_id',
 			'associationForeignKey' => 'block_id',
@@ -43,7 +43,7 @@ class Site extends SitesAppModel {
 			'with' => 'Sites.SitesBlock',
 		),
 		'Link' => array(
-			'className' => 'Link',
+			'className' => 'Menus.Link',
 			'joinTable' => 'sites_links',
 			'foreignKey' => 'site_id',
 			'associationForeignKey' => 'link_id',
