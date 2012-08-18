@@ -7,6 +7,12 @@ class Site extends SitesAppModel {
 
 	public $actsAs = array(
 		'Containable',
+		'Utils.Sluggable' => array(
+				'label' => 'title',
+				'slug' => 'slug',
+				'update' => true,
+				'separator' => '-',
+			),
 		);
 
 	public $hasMany = array(
