@@ -2,6 +2,9 @@
 
 class SitesActivation {
 	public function beforeActivation(&$controller) {
+		if (!CakePlugin::loaded('Utils')) {
+			return false;
+		}
 		if (defined('FULL_BASE_URL')) {
 			$parsed = parse_url(FULL_BASE_URL);
 			if (!empty($parsed['host']) && $parsed['host'] !== 'localhost') {
