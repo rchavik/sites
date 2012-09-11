@@ -111,7 +111,7 @@ class SiteFilterBehavior extends ModelBehavior {
 		}
 
 		$query['joins'] = $joins;
-		$model->contain('Site');
+		$model->contain(array('Site' => 'SiteDomain'));
 		unset($query['recursive']);
 		return $query;
 	}
