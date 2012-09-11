@@ -5,6 +5,7 @@ App::uses('Sites', 'Sites.Lib');
 class SiteFilterBehavior extends ModelBehavior {
 
 	function setup(&$model, $config = array()) {
+		$model->Behaviors->setPriority(array('SiteFilter' => 5));
 		$config = Set::merge(array(
 			'relationship' => false,
 			'joins' => array(),
@@ -110,6 +111,8 @@ class SiteFilterBehavior extends ModelBehavior {
 		}
 
 		$query['joins'] = $joins;
+		$model->contain('Site');
+		unset($query['recursive']);
 		return $query;
 	}
 

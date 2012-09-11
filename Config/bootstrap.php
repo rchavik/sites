@@ -68,6 +68,10 @@ Croogo::hookComponent('*', array(
 
 Croogo::hookHelper('Nodes', 'Sites.Sites');
 
+// uncomment this line to use absolute url for menu links
+// alternatively, you can hook this helper later via other plugins
+// Croogo::hookHelper('*', 'Sites.SitesMenus');
+
 Croogo::hookAdminTab('Nodes/admin_add', 'Sites', 'sites.sites_selection');
 Croogo::hookAdminTab('Nodes/admin_edit', 'Sites', 'sites.sites_selection');
 Croogo::hookAdminTab('Attachments/admin_add', 'Sites', 'sites.sites_selection');

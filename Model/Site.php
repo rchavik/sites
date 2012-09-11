@@ -67,8 +67,8 @@ class Site extends SitesAppModel {
 			'fields' => 'id',
 			'conditions' => array(
 				$model->alias . '.status' => true,
-				)
-			);
+			)
+		);
 		$rows = $model->find('all', $conditions);
 		foreach ($rows as &$row) {
 			if (isset($row['Site']['Site'])) {
