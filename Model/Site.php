@@ -54,6 +54,13 @@ class Site extends SitesAppModel {
 
 	public function publish_all($siteId, &$model) {
 		$model->Behaviors->attach('Containable');
+		foreach (array('hasMany', 'belongsTo', 'hasAndBelongsToMany') as $relation) {
+			foreach ($model->{$relation} as $relatedModel => $config) {
+				if ($relatedModel != 'Site') {
+					$model->unbindModel(array($relation => array($relatedModel)), false);
+				}
+			}
+		}
 		$model->disableFilter();
 		$conditions = array(
 			'contain' => array('Site' => array('id')),
@@ -67,7 +74,9 @@ class Site extends SitesAppModel {
 			if (isset($row['Site']['Site'])) {
 				$row['Site']['Site'] = array_unique(Set::merge($row['Site']['Site'], array($siteId)));
 			} else {
-				$row['Site']['Site'] = array($siteId);
+				$siteIds = Hash::extract($row, 'Site.{n}.id');
+				$siteIds = array_merge($siteIds, array($siteId));
+				$row['Site']['Site'] = $siteIds;
 			}
 		}
 		return $model->saveAll($rows);
