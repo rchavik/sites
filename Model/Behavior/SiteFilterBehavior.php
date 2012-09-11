@@ -4,7 +4,7 @@ App::uses('Sites', 'Sites.Lib');
 
 class SiteFilterBehavior extends ModelBehavior {
 
-	function setup(&$model, $config = array()) {
+	public function setup(Model $model, $config = array()) {
 		$model->Behaviors->setPriority(array('SiteFilter' => 5));
 		$config = Set::merge(array(
 			'relationship' => false,
@@ -16,21 +16,21 @@ class SiteFilterBehavior extends ModelBehavior {
 		$this->_setupRelationships($model, $config);
 	}
 
-	function _setupRelationships(&$model, $config = array()) {
+	protected function _setupRelationships(Model $model, $config = array()) {
 		if (!empty($this->settings[$model->alias]['relationship'])) {
 			$model->bindModel($config['relationship'], false);
 		}
 	}
 
-	function enableFilter(&$model) {
+	public function enableFilter(Model $model) {
 		$this->settings[$model->alias]['filter'] = true;
 	}
 
-	function disableFilter(&$model) {
+	public function disableFilter(Model $model) {
 		$this->settings[$model->alias]['filter'] = false;
 	}
 
-	function beforeFind(&$model, $query) {
+	public function beforeFind(Model $model, $query) {
 		if ($this->settings[$model->alias]['enabled'] === false) {
 			return $query;
 		}
