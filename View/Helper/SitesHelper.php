@@ -33,7 +33,14 @@ class SitesHelper extends AppHelper {
 		if (isset($node['Site'][0]['SiteDomain'][0]['domain'])) {
 			$href = $this->_href($node);
 		} else {
-			$href = $this->Site->href($this->here);
+			$plugin = Inflector::camelize($this->request->plugin);
+			$corePlugins = array(
+				'Acl', 'Blocks', 'Comments', 'Contacts', 'Extensions',
+				'FileManager', 'Menus', 'Meta', 'Nodes', 'Settings',
+				'Taxonomy', 'Translate', 'Users',
+			);
+			$domain = in_array($plugin, $corePlugins) ? null : env('HTTP_HOST');
+			$href = $this->Site->href($this->here, $domain);
 		}
 		if ($href) {
 			$link = $this->Html->tag('link', null, array(
