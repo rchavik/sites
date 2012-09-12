@@ -1,9 +1,7 @@
 <?php
 class SiteDomainsController extends SitesAppController {
 
-	var $name = 'SiteDomains';
-
-	function admin_index() {
+	public function admin_index() {
 		$this->SiteDomain->recursive = 0;
 
 		if (!empty($this->params['pass'][0])) {
@@ -16,7 +14,7 @@ class SiteDomainsController extends SitesAppController {
 		$this->set('siteDomains', $this->paginate());
 	}
 
-	function admin_view($id = null) {
+	public function admin_view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid site domain'));
 			$this->redirect(array('action' => 'index'));
@@ -24,7 +22,7 @@ class SiteDomainsController extends SitesAppController {
 		$this->set('siteDomain', $this->SiteDomain->read(null, $id));
 	}
 
-	function admin_add() {
+	public function admin_add() {
 		if (!empty($this->request->data)) {
 			$this->SiteDomain->create();
 			if ($this->SiteDomain->save($this->request->data)) {
@@ -51,7 +49,7 @@ class SiteDomainsController extends SitesAppController {
 		$this->set(compact('sites', 'selected'));
 	}
 
-	function admin_edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid site domain'));
 			$this->redirect(array('action' => 'index'));
@@ -76,7 +74,7 @@ class SiteDomainsController extends SitesAppController {
 		$this->set(compact('sites'));
 	}
 
-	function admin_delete($id = null) {
+	public function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for site domain'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));

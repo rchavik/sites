@@ -1,13 +1,9 @@
 <?php
 class SiteDomain extends SitesAppModel {
-	var $name = 'SiteDomain';
-	var $useTable = 'site_domains';
 
-	var $actsAs = array(
-		'Containable',
-		);
+	public $useTable = 'site_domains';
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Site' => array(
 			'className' => 'Sites.Site',
 			'foreignKey' => 'site_id',
