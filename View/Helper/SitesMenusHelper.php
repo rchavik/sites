@@ -19,6 +19,7 @@ class SitesMenusHelper extends MenusHelper {
 	public function __construct(View $view, $settings = array()) {
 		parent::__construct($view);
 		$this->_setupEvents();
+		$this->Site = ClassRegistry::init('Sites.Site');
 	}
 
 	protected function _setupEvents() {
@@ -40,33 +41,24 @@ class SitesMenusHelper extends MenusHelper {
  * @return string url
  */
 	public function absoluteUrl(&$link) {
-		if (!$this->SiteDomain) {
-			$this->SiteDomain = ClassRegistry::init('Sites.SiteDomain');
-		}
 		if (is_array($link) &&
 			isset($link['Params']['absolute']) &&
 			$link['Params']['absolute'] == 1 &&
 			!empty($link['Site'][0]['id'])
 		) {
-			$domainId = $link['Site'][0]['id'];
-			$domain = $this->SiteDomain->find('first', array(
-				'conditions' => array(
-					'SiteDomain.site_id' => $domainId,
-				),
-				'cache' => array(
-					'name' => 'domain_lookup',
-					'config' => 'nodes_index',
-				),
-			));
-			$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+			if ($link['Site'][0]['id'] == Sites::ALL_SITES) {
+				$site = $this->Site->find('default');
+				$domain = $site['SiteDomain'][0]['domain'];
+			} else {
+				$domain = $link['Site'][0]['SiteDomain'][0]['domain'];
+			}
 			if (is_string($link['Link']['link'])) {
 				$linkStr = $link['Link']['link'];
 			} else {
 				$linkStr = $this->url($link['Link']['link']);
 			}
 			if (strpos($linkStr, 'http://') === false) {
-				$linkStr = $scheme . '://' . $domain['SiteDomain']['domain'] . $linkStr;
-				$link['Link']['link'] = $linkStr;
+				$link['Link']['link'] = $this->Site->href($linkStr, $domain);
 			}
 		}
 	}

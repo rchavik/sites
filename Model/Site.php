@@ -48,6 +48,13 @@ class Site extends SitesAppModel {
 		),
 	);
 
+/**
+ * custom finds
+ */
+	public $findMethods = array(
+		'default' => true,
+	);
+
 	public function publish_all($siteId, &$model) {
 		$model->Behaviors->attach('Containable');
 		foreach (array('hasMany', 'belongsTo', 'hasAndBelongsToMany') as $relation) {
@@ -76,6 +83,48 @@ class Site extends SitesAppModel {
 			}
 		}
 		return $model->saveAll($rows);
+	}
+
+/**
+ * finds the default site
+ */
+	protected function _findDefault($state, $query, $results = array()) {
+		if ($state == 'before') {
+			$query = Hash::merge($query, array(
+				'contain' => array('SiteDomain'),
+				'conditions' => array(
+					'Site.default' => true,
+					'Site.status' => true,
+				),
+				'cache' => array(
+					'name' => 'default_domain',
+					'config' => 'nodes_index',
+				),
+			));
+			return $query;
+		} else {
+			if (isset($results[0])) {
+				return $results[0];
+			}
+		}
+	}
+
+/**
+ * returns the canonical target
+ *
+ * @param string $path
+ * @param string $domain when null, the default domain will be used
+ */
+	public function href($path, $domain = null) {
+		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+		if ($domain == null) {
+			$site = $this->find('default');
+			if (!$site) {
+				return false;
+			}
+			$domain = $site['SiteDomain'][0]['domain'];
+		}
+		return $scheme . '://' . $domain. $path;
 	}
 
 }

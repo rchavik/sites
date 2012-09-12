@@ -66,7 +66,7 @@ Croogo::hookComponent('*', array(
 		)
 	));
 
-Croogo::hookHelper('Nodes', 'Sites.Sites');
+Croogo::hookHelper('*', 'Sites.Sites');
 
 // uncomment this line to use absolute url for menu links
 // alternatively, you can hook this helper later via other plugins
