@@ -14,22 +14,37 @@ Configuration
 
    Eg:
 
+   <?php
+
 		class DATABASE_CONFIG {
 			var $default = array(
 				'driver' => 'mysql',
-				'database' => 'crogoo',
+				'database' => 'croogo',
 				...
 				);
 
 			var $sites = array(
 				'driver' => 'mysql',
-				'database' => 'crogoo',
+				'database' => 'croogo',
 				...
 				);
 		}
 
 2. Activate the plugin
    Don't forget to cross your fingers.
+
+Link in a multisite environment
+-------------------------------
+
+The default menu helper generate menu link using a relative url. For some items,
+you would need to have an absolute url in the link.  To achieve this, select the
+site that applies to the Link and set `absolute=1` in the link's params field.
+
+Canonical Url
+-------------
+
+You can use SitesHelper::canonical() to output a canonical url in your layout.
+
 
 Known Bugs
 -----------
@@ -39,7 +54,7 @@ At the moment, there are no known bugs. Feel free to fork or to notify.
 Requirements
 -----------
 
-Croogo (tested on 1.3.3) - http://croogo.org/
+Croogo (tested on 1.5) - http://croogo.org/
 
 Good luck and have fun.
 -- rchavik (& bumuckl)
