@@ -50,7 +50,8 @@ class MultisiteComponent extends Component {
 				$Model->Behaviors->SiteFilter->disableFilter($Model);
 			}
 		}
-		$site = Sites::currentSite();
+		$sites = new Sites();
+		$site = $sites->currentSite();
 	}
 
 }
