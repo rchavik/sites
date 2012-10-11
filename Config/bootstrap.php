@@ -81,4 +81,12 @@ Croogo::hookAdminTab('Blocks/admin_edit', 'Sites', 'sites.sites_selection');
 Croogo::hookAdminTab('Links/admin_add', 'Sites', 'sites.sites_selection');
 Croogo::hookAdminTab('Links/admin_edit', 'Sites', 'sites.sites_selection');
 
+$cacheConfig = Cache::config('_cake_model_');
+$cacheConfig = Hash::merge($cacheConfig['settings'], array(
+	'prefix' => 'sites_',
+	'path' => CACHE . 'queries',
+	'duration' => '+1 hour',
+));
+Cache::config('sites', $cacheConfig);
+
 require 'admin_menu.php';

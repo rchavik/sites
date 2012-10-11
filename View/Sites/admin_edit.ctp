@@ -16,6 +16,7 @@
 			<ul>
 				<li><a href="#site-basic"><span><?php echo __('Settings'); ?></span></a></li>
 				<li><a href="#site-domains"><span><?php echo __('Domains'); ?></span></a></li>
+				<li><a href="#site-metas"><span><?php echo __('Meta'); ?></span></a></li>
 				<?php echo $this->Layout->adminTabs(); ?>
 			</ul>
 
@@ -51,6 +52,15 @@
 				}
 			?>
 			</div>
+
+			<div id="site-metas">
+			<?php
+				echo $this->Form->input('SiteMeta.robots');
+				echo $this->Form->input('SiteMeta.keywords');
+				echo $this->Form->input('SiteMeta.description');
+			?>
+			</div>
+
 			<?php echo $this->Layout->adminTabs(); ?>
 		</div>
 	</fieldset>

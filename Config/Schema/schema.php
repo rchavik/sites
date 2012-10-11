@@ -26,6 +26,7 @@ class SitesSchema extends CakeSchema {
 		'created' => array('type' => 'timestamp', 'null' => true),
 		'modified_by' => array('type' => 'string', 'length' => 36),
 		'modified' => array('type' => 'timestamp', 'null' => true),
+		'default' => array('type' => 'integer', 'null' => true, 'default' => 0),
 		'indexes' => array(
 			'id' => array('column' => array('id'), 'unique' => true),
 			'ix_site_title' => array(
@@ -38,8 +39,22 @@ class SitesSchema extends CakeSchema {
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
 			),
-		'default' => array('type' => 'integer', 'null' => true, 'default' => 0),
 		);
+
+
+	public $site_metas = array(
+		'site_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'robots' => array('type' => 'string', 'length' => 100, 'null' => true),
+		'keywords' => array('type' => 'string', 'length' => 255, 'null' => true),
+		'description' => array('type' => 'text', 'length' => 500, 'null' => true),
+		'indexes' => array(
+			'pk_site_metas' => array('column' => array('site_id'), 'unique' => true),
+		),
+		'tableParameters' => array(
+			'charset' => 'utf8',
+			'collate' => 'utf8_unicode_ci',
+		),
+	);
 
 	public $site_domains = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),

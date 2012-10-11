@@ -5,6 +5,12 @@ class Site extends SitesAppModel {
 
 	public $useTable = 'sites';
 
+	public $hasOne = array(
+		'SiteMeta' => array(
+			'className' => 'Sites.SiteMeta',
+		),
+	);
+
 	public $hasMany = array(
 		'SiteDomain' => array(
 			'className' => 'Sites.SiteDomain',

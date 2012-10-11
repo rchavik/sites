@@ -51,7 +51,7 @@ class SitesController extends SitesAppController {
 			}
 		}
 		if (empty($this->request->data)) {
-			$this->Site->contain('SiteDomain');
+			$this->Site->contain(array('SiteDomain', 'SiteMeta'));
 			$this->request->data = $this->Site->read(null, $id);
 		}
 
