@@ -37,7 +37,7 @@ class Site extends SitesAppModel {
 			'with' => 'Sites.SitesNode',
 		),
 		'Block' => array(
-			'className' => 'Regions.Block',
+			'className' => 'Blocks.Block',
 			'joinTable' => 'sites_blocks',
 			'foreignKey' => 'site_id',
 			'associationForeignKey' => 'block_id',
