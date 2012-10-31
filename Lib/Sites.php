@@ -25,7 +25,7 @@ class Sites {
 			$keys = $key;
 		}
 		foreach ($keys as $key) {
-			if (! empty(self::$_site['Site'][$key])) {
+			if (isset(self::$_site['Site'][$key])) {
 				Configure::write('Site.' . $key, self::$_site['Site'][$key]);
 			}
 		}
