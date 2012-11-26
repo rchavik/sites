@@ -20,7 +20,7 @@ class SitesActivation {
 		App::import('Model', 'ConnectionManager');
 		App::uses('Sites', 'Sites.Lib');
 		include_once(APP.'Plugin'.DS.'Sites'.DS.'Config'.DS.'Schema'.DS.'schema.php');
-		$db = ConnectionManager::getDataSource('sites');
+		$db = ConnectionManager::getDataSource('default');
 
 		//Get all available tables
 		$tables = $db->listSources();
