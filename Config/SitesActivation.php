@@ -67,8 +67,8 @@ class SitesActivation {
 			$count = $controller->Site->SiteDomain->find('count', array(
 				'conditions' => array(
 					'SiteDomain.site_id' => Sites::ALL_SITES,
-					)
-				));
+				)
+			));
 			if ($count > 0) {
 				unset($data['SiteDomain']);
 			}

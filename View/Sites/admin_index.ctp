@@ -3,7 +3,7 @@
 $this->extend('/Common/admin_index');
 
 ?>
-<?php $this->start('tabs'); ?>
+<?php $this->start('actions'); ?>
 	<li><?php echo $this->Html->link(__('New Site'), array('action' => 'add'), array('button' => 'default')); ?></li>
 	<li><?php echo $this->Html->link(__('Enable All Sites'), array('action' => 'enable'), array('button' => 'default'), 'Enable all sites?'); ?></li>
 	<li><?php echo $this->Html->link(__('Disable All Sites'), array('action' => 'disable'), array('button' => 'default'), 'Disable all sites?'); ?></li>

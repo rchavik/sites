@@ -7,5 +7,5 @@ CroogoNav::add('extensions.children.sites', array(
 		'admin' => true,
 		'controller' => 'sites',
 		'action' => 'index',
-		),
-	));
+	),
+));

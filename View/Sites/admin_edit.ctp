@@ -4,7 +4,9 @@ $this->extend('/Common/admin_edit');
 
 ?>
 
-<?php $this->start('tabs'); ?>
+<?php $this->start('actions'); ?>
+<?php
+?>
 	<li><?php echo $this->Html->link(__('Back'), array('action'=>'index')); ?></li>
 	<?php if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) : ?>
 	<li><?php echo $this->Html->link(__('Add Domain'), array('action' => 'adddomain', $this->data['Site']['id'])); ?></li>

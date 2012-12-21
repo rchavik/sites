@@ -9,10 +9,10 @@ Croogo::hookBehavior('Node', 'Sites.SiteFilter', array(
 				'foreignKey' => 'node_id',
 				'associationForeignKey' => 'site_id',
 				'unique' => 'keepExisting',
-				),
 			),
 		),
-	));
+	),
+));
 
 Croogo::hookBehavior('Block', 'Sites.SiteFilter', array(
 	'relationship' => array(
@@ -24,10 +24,10 @@ Croogo::hookBehavior('Block', 'Sites.SiteFilter', array(
 				'associationForeignKey' => 'site_id',
 				'unique' => 'keepExisting',
 				'joinTable' => 'sites_blocks',
-				),
 			),
 		),
-	));
+	),
+));
 
 Croogo::hookBehavior('Link', 'Sites.SiteFilter', array(
 	'relationship' => array(
@@ -39,10 +39,10 @@ Croogo::hookBehavior('Link', 'Sites.SiteFilter', array(
 				'associationForeignKey' => 'site_id',
 				'unique' => 'keepExisting',
 				'joinTable' => 'sites_links',
-				),
 			),
 		),
-	));
+	),
+));
 
 if (Configure::read('Cakeforum.name') !== false):
 Croogo::hookBehavior('ForumCategory', 'Sites.SiteFilter', array(
@@ -53,18 +53,18 @@ Croogo::hookBehavior('ForumCategory', 'Sites.SiteFilter', array(
 				'with' => 'Sites.SitesForumCategory',
 				'foreignKey' => 'forum_category_id',
 				'associationForeignKey' => 'site_id',
-				),
 			),
 		),
-	));
+	),
+));
 Croogo::hookComponent('ForumCategories', 'Sites.SiteFilter');
 endif;
 
 Croogo::hookComponent('*', array(
 	'Sites.Multisite' => array(
 		'priority' => 5,
-		)
-	));
+	)
+));
 
 Croogo::hookHelper('*', 'Sites.Sites');
 
