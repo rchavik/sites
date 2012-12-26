@@ -7,12 +7,28 @@ $this->extend('/Common/admin_edit');
 <?php $this->start('actions'); ?>
 <?php
 ?>
-	<li><?php echo $this->Html->link(__('Back'), array('action'=>'index')); ?></li>
+	<?php echo $this->Html->link(__('Back'), array('action'=>'index'), array('button' => 'default')); ?>
 	<?php if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) : ?>
-	<li><?php echo $this->Html->link(__('Add Domain'), array('action' => 'adddomain', $this->data['Site']['id'])); ?></li>
+	<?php echo $this->Html->link(__('Add Domain'), array('action' => 'adddomain', $this->data['Site']['id']), array(
+		'icon' => 'plus', 'button' => 'default',
+	)); ?>
 	<?php endif; ?>
 <?php $this->end(); ?>
+<style>
+.input .btn {
+	vertical-align: top;
+}
+</style>
+<?php
 
+if (!empty($this->request->query['domain_id'])) {
+	$domainId = $this->request->query['domain_id'];
+	$script = '$("a[href=#site-domains]").tab("show");';
+	$script .= '$("input[data-domain_id=' . $domainId . ']").focus();';
+	$this->Js->buffer($script);
+}
+
+?>
 <?php echo $this->Form->create('Site');?>
 <div class="row-fluid">
 	<div class="span8">
@@ -46,11 +62,20 @@ $this->extend('/Common/admin_edit');
 			<?php
 				if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) {
 					foreach ( $this->data['SiteDomain'] as $key => $value ) {
-						echo $this->Form->input('SiteDomain.'.$key.'.id');
-						echo $this->Form->input('SiteDomain.'.$key.'.domain');
 						if (count($this->data['SiteDomain']) > 1) {
-							echo $this->Html->link(__('Delete'), array('action' => 'deletedomain', $this->data['SiteDomain'][$key]['id']));
+							$after = ' ' . $this->Html->link(__('Delete'),
+								array('action' => 'deletedomain', $this->data['SiteDomain'][$key]['id']),
+								array('button' => 'danger')
+							);
 						}
+						if (!isset($after)) {
+							$after = '';
+						}
+						echo $this->Form->input('SiteDomain.' .$key . '.id');
+						echo $this->Form->input('SiteDomain.' .$key . '.domain', array(
+							'data-domain_id' => $this->data['SiteDomain'][$key]['id'],
+							'after' => $after,
+						));
 					}
 
 				} else {

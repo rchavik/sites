@@ -100,7 +100,10 @@ class SitesController extends SitesAppController {
 			$this->request->data['site_id'] = $id;
 			$this->Site->SiteDomain->save($this->request->data);
 			$this->Session->setFlash(__('A new domain has been successfully added. You may now enter the desired URL.'));
-			$this->redirect(array('action' => 'edit', $id, '#' => 'site-domains'));
+			$this->redirect(array('action' => 'edit', $id, '?' => array(
+				'domain_id' => $this->Site->SiteDomain->id
+				)
+			));
 		}
 	}
 
