@@ -85,11 +85,6 @@ if (!empty($this->request->query['domain_id'])) {
 			?>
 			</div>
 
-			<div id="site-metas" class="tab-pane">
-			<?php
-			?>
-			</div>
-
 			<?php echo $this->Layout->adminTabs(); ?>
 		</div>
 	</div>
@@ -108,9 +103,15 @@ if (!empty($this->request->query['domain_id'])) {
 		echo $this->Html->endBox();
 
 		echo $this->Html->beginBox(__('Meta')) .
-			$this->Form->input('SiteMeta.robots') .
-			$this->Form->input('SiteMeta.keywords') .
-			$this->Form->input('SiteMeta.description');
+			$this->Form->input('SiteMeta.robots', array(
+				'tooltip' => 'Robots',
+			)) .
+			$this->Form->input('SiteMeta.keywords', array(
+				'tooltip' => 'Keywords',
+			)) .
+			$this->Form->input('SiteMeta.description', array(
+				'tooltip' => 'Description',
+			));
 		echo $this->Html->endBox();
 
 		echo $this->Croogo->adminBoxes();
