@@ -2,6 +2,14 @@
 
 $this->extend('/Common/admin_index');
 
+$this->Html
+	->addCrumb('', '/admin', array('icon' => 'home'))
+	->addCrumb(__('Extensions'), array(
+		'plugin' => 'extensions', 'controller' => 'extensions_plugins',
+	))
+	->addCrumb(__('Sites'), array('plugin' => 'sites', 'controller' => 'sites'))
+	;
+
 ?>
 <?php $this->start('actions'); ?>
 	<li><?php echo $this->Html->link(__('New Site'), array('action' => 'add'), array('button' => 'default')); ?></li>

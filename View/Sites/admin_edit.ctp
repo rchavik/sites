@@ -2,6 +2,22 @@
 
 $this->extend('/Common/admin_edit');
 
+
+$this->Html
+	->addCrumb('', '/admin', array('icon' => 'home'))
+	->addCrumb(__('Extensions'), array(
+		'plugin' => 'extensions', 'controller' => 'extensions_plugins',
+	))
+	->addCrumb(__('Sites'), array('controller' => 'sites', 'action' => 'index'))
+	;
+
+if (!empty($this->data['Site']['id'])) {
+	$crumb = $this->data['Site']['title'];
+} else {
+	$crumb = __('Add');
+}
+$this->Html->addCrumb($crumb, $this->here);
+
 ?>
 
 <?php $this->start('actions'); ?>

@@ -2,6 +2,15 @@
 
 $this->extend('/Common/admin_edit');
 
+$this->Html
+	->addCrumb('', '/admin', array('icon' => 'home'))
+	->addCrumb(__('Extensions'), array(
+		'plugin' => 'extensions', 'controller' => 'extensions_plugins',
+	))
+	->addCrumb(__('Sites'), array('controller' => 'sites', 'action' => 'index'))
+	->addCrumb($site['Site']['title'], $this->here)
+	;
+
 ?>
 <?php $this->start('actions'); ?>
 	<li><?php echo $this->Html->link(__('Edit Site'), array('action' => 'edit', $site['Site']['id']), array('icon' => 'pencil', 'button' => 'default')); ?> </li>
