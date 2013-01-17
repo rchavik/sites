@@ -45,7 +45,7 @@ class SitesController extends SitesAppController {
 		if (!empty($this->request->data)) {
 			if ($this->Site->saveAll($this->request->data)) {
 				$this->Session->setFlash(__('The site has been saved'));
-				$this->redirect(array('action' => 'index'));
+				$this->Croogo->redirect(array('action' => 'edit', $this->Site->id));
 			} else {
 				$this->Session->setFlash(__('The site could not be saved. Please, try again.'));
 			}
@@ -98,9 +98,13 @@ class SitesController extends SitesAppController {
 			$this->Site->SiteDomain->create();
 			$this->request->data['domain'] = '';
 			$this->request->data['site_id'] = $id;
+			unset($this->Site->SiteDomain->validate['domain']);
 			$this->Site->SiteDomain->save($this->request->data);
 			$this->Session->setFlash(__('A new domain has been successfully added. You may now enter the desired URL.'));
-			$this->redirect(array('action' => 'edit', $id, '#' => 'site-domains'));
+			$this->redirect(array('action' => 'edit', $id, '?' => array(
+				'domain_id' => $this->Site->SiteDomain->id
+				)
+			));
 		}
 	}
 

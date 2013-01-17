@@ -13,4 +13,17 @@ class SiteDomain extends SitesAppModel {
 		)
 	);
 
+	public $validate = array(
+		'domain' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Domain must not be empty',
+			),
+			'unique' => array(
+				'rule' => 'isUnique',
+				'message' => 'Domain must be unique',
+			),
+		),
+	);
+
 }

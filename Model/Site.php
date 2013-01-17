@@ -128,7 +128,11 @@ class Site extends SitesAppModel {
 			if (!$site) {
 				return false;
 			}
-			$domain = $site['SiteDomain'][0]['domain'];
+			if (!empty($site['SiteDomain'][0]['domain'])) {
+				$domain = $site['SiteDomain'][0]['domain'];
+			} else {
+				return $path;
+			}
 		}
 		return $scheme . '://' . $domain. $path;
 	}

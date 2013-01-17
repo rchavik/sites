@@ -1,15 +1,25 @@
-<div class="sites view">
-	<h2><?php echo __('Site');?></h2>
+<?php
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('Edit Site'), array('action' => 'edit', $site['Site']['id'])); ?> </li>
-			<li><?php echo $this->Html->link(__('Delete Site'), array('action' => 'delete', $site['Site']['id']), null, sprintf(__('Are you sure you want to delete # %s?'), $site['Site']['id'])); ?> </li>
-			<li><?php echo $this->Html->link(__('List Sites'), array('action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('New Site'), array('action' => 'add')); ?> </li>
-		</ul>
-	</div>
+$this->extend('/Common/admin_edit');
 
+$this->Html
+	->addCrumb('', '/admin', array('icon' => 'home'))
+	->addCrumb(__('Extensions'), array(
+		'plugin' => 'extensions', 'controller' => 'extensions_plugins',
+	))
+	->addCrumb(__('Sites'), array('controller' => 'sites', 'action' => 'index'))
+	->addCrumb($site['Site']['title'], $this->here)
+	;
+
+?>
+<?php $this->start('actions'); ?>
+	<li><?php echo $this->Html->link(__('Edit Site'), array('action' => 'edit', $site['Site']['id']), array('icon' => 'pencil', 'button' => 'default')); ?> </li>
+	<li><?php echo $this->Html->link(__('Delete Site'), array('action' => 'delete', $site['Site']['id']), array('icon' => 'trash', 'button' => 'default'), sprintf(__('Are you sure you want to delete # %s?'), $site['Site']['id'])); ?> </li>
+	<li><?php echo $this->Html->link(__('List Sites'), array('action' => 'index'), array('icon' => 'list', 'button' => 'default')); ?> </li>
+	<li><?php echo $this->Html->link(__('New Site'), array('action' => 'add'), array('icon' => 'plus', 'button' => 'default')); ?> </li>
+<?php $this->end(); ?>
+
+<div class="row-fluid">
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php echo __('Id'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
