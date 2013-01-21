@@ -111,9 +111,38 @@ class SiteFilterBehavior extends ModelBehavior {
 		}
 
 		$query['joins'] = $joins;
-		$model->contain(array('Site' => 'SiteDomain'));
 		unset($query['recursive']);
 		return $query;
+	}
+
+/**
+ * retrieve domain information
+ */
+	public function afterFind(Model $model, $results, $primary) {
+		if (!$primary || $this->settings[$model->alias]['enabled'] === false) {
+			return $query;
+		}
+		foreach ($results as &$result) {
+			if (empty($result['Site'])) {
+				continue;
+			}
+			foreach ($result['Site'] as &$site) {
+				if (isset($site['SiteDomain'])) {
+					continue;
+				}
+				$domains = $model->Site->SiteDomain->find('all', array(
+					'cache' => array(
+						'name' => 'site_domains_' . $site['id'],
+						'config' => 'sites',
+					),
+					'conditions' => array(
+						'SiteDomain.site_id' => $site['id'],
+					),
+				));
+				$site['SiteDomain'] = Hash::extract($domains, '{n}.SiteDomain');
+			}
+		}
+		return $results;
 	}
 
 }
