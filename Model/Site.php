@@ -24,8 +24,8 @@ class Site extends SitesAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-			),
-		);
+		),
+	);
 
 	public $hasAndBelongsToMany = array(
 		'Node' => array(

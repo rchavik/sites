@@ -41,7 +41,7 @@ class SiteFilterBehavior extends ModelBehavior {
 		$setting = Set::merge(
 			array('relationship' => array(), 'joins' => array()),
 			$this->settings[$model->alias]
-			);
+		);
 		extract($setting);
 
 		if (!empty($joins)) {

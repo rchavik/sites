@@ -1,5 +1,7 @@
 <?php
 
+App::uses('SitesAppController', 'Controller');
+
 class SitesController extends SitesAppController {
 
 	public $name = 'Sites';
@@ -8,7 +10,7 @@ class SitesController extends SitesAppController {
 
 	public $helpers = array(
 		'Sites.Sites',
-		);
+	);
 
 	public function admin_index() {
 		$this->set('sites', $this->paginate());
@@ -127,7 +129,7 @@ class SitesController extends SitesAppController {
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->Site->publish_all($id, $this->Site->Node)) {
-			$this->Session->setFlash(__('All nodes has been published for this site %d', $id));
+			$this->Session->setFlash(__('All nodes has been published for this site %d', $id), 'default', array('class' => 'success'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		$this->Session->setFlash(__('Unable to publish existing nodes'));
@@ -140,7 +142,7 @@ class SitesController extends SitesAppController {
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->Site->publish_all($id, $this->Site->Block)) {
-			$this->Session->setFlash(__('All blocks has been published for this site %d', $id));
+			$this->Session->setFlash(__('All blocks has been published for this site %d', $id), 'default', array('class' => 'success'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		$this->Session->setFlash(__('Unable to publish existing blocks'));
@@ -153,7 +155,7 @@ class SitesController extends SitesAppController {
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->Site->publish_all($id, $this->Site->Link)) {
-			$this->Session->setFlash(__('All links has been published for this site %d', $id));
+			$this->Session->setFlash(__('All links has been published for this site %d', $id), 'default', array('class' => 'success'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		$this->Session->setFlash(__('Unable to publish existing links'));

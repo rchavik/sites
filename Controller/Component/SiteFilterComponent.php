@@ -6,7 +6,7 @@ class SiteFilterComponent extends Component {
 
 	var $controller = false;
 
-	function adminFilter(&$controller) {
+	public function adminFilter(Controller $controller) {
         $filterKey = 'Sites.' . $controller->modelClass . '.adminFilter';
         if (isset($controller->data['filter']['Site'])) {
             $filterSiteId = $controller->data['filter']['Site'];
@@ -33,13 +33,13 @@ class SiteFilterComponent extends Component {
         }
 	}
 
-	function startup(&$controller) {
+	public function startup(Controller $controller) {
 		if (isset($controller->params['admin'])) {
 			$this->adminFilter($controller);
 		}
 	}
 
-	function initialize(&$controller) {
+	public function initialize(Controller $controller) {
 		$this->controller = $controller;
 		if (1 == $controller->Auth->user('role_id') && isset($controller->params['admin'])) {
 			$Model =& $controller->{$controller->modelClass};

@@ -1,4 +1,7 @@
 <?php
+
+App::uses('SitesAppController', 'Controller');
+
 class SiteDomainsController extends SitesAppController {
 
 	public function admin_index() {

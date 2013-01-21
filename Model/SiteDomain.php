@@ -9,7 +9,7 @@ class SiteDomain extends SitesAppModel {
 			'foreignKey' => 'site_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
 		)
 	);
 
