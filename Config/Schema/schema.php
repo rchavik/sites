@@ -1,8 +1,8 @@
 <?php 
 
-class SitesSchema extends CakeSchema {
+class SiteSchema extends CakeSchema {
 
-	var $name = 'Sites';
+	public $name = 'Site';
 
 	public function before($event = array()) {
 		return true;
@@ -32,14 +32,14 @@ class SitesSchema extends CakeSchema {
 			'ix_site_title' => array(
 				'column' => array('slug'),
 				'unique' => true,
-				),
 			),
+		),
 		'tableParameters' => array(
 			'charset' => 'utf8',
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
-			),
-		);
+		),
+	);
 
 
 	public $site_metas = array(
@@ -69,14 +69,14 @@ class SitesSchema extends CakeSchema {
 			'ix_sites_name' => array(
 				'column' => array('site_id', 'domain'),
 				'unique' => true,
-				),
 			),
+		),
 		'tableParameters' => array(
 			'charset' => 'utf8',
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
-			),
-		);
+		),
+	);
 
 	public $sites_nodes = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
@@ -89,14 +89,14 @@ class SitesSchema extends CakeSchema {
 			'ix_sites_nodes' => array(
 				'column' => array('site_id', 'node_id'),
 				'unique' => true,
-				),
 			),
+		),
 		'tableParameters' => array(
 			'charset' => 'utf8',
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
-			),
-		);
+		),
+	);
 
 	public $sites_blocks = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
@@ -109,14 +109,14 @@ class SitesSchema extends CakeSchema {
 			'ix_sites_blocks' => array(
 				'column' => array('site_id', 'block_id'),
 				'unique' => true,
-				),
 			),
+		),
 		'tableParameters' => array(
 			'charset' => 'utf8',
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
-			),
-		);
+		),
+	);
 
 	public $sites_links = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
@@ -129,14 +129,14 @@ class SitesSchema extends CakeSchema {
 			'ix_sites_links' => array(
 				'column' => array('site_id', 'link_id'),
 				'unique' => true,
-				),
 			),
+		),
 		'tableParameters' => array(
 			'charset' => 'utf8',
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
-			),
-		);
+		),
+	);
 
 	public $sites_forum_categories = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
@@ -149,13 +149,13 @@ class SitesSchema extends CakeSchema {
 			'ix_sites_nodes' => array(
 				'column' => array('site_id', 'forum_category_id'),
 				'unique' => true,
-				),
 			),
+		),
 		'tableParameters' => array(
 			'charset' => 'utf8',
 			'collate' => 'utf8_unicode_ci',
 			'engine' => 'InnoDb'
-			),
-		);
+		),
+	);
 
 }

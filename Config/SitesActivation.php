@@ -26,7 +26,7 @@ class SitesActivation {
 		$tables = $db->listSources();
 
 		$CakeSchema = new CakeSchema();
-		$SiteSchema = new SitesSchema();
+		$SiteSchema = new SiteSchema();
 
 		foreach ($SiteSchema->tables as $table => $config) {
 			if (!in_array($table, $tables)) {
