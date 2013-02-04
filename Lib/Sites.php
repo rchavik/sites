@@ -39,7 +39,7 @@ class Sites {
 		}
 	}
 
-	public function currentSite($siteId = null) {
+	public static function currentSite($siteId = null) {
 		$_this = Sites::getInstance();
 		self::$_site = $_this->_getSite($siteId);
 		$_this->_overrideSetting(array(
