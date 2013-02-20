@@ -1,6 +1,6 @@
 <?php
 
-App::uses('SitesAppController', 'Controller');
+App::uses('SitesAppController', 'Sites.Controller');
 
 class SiteDomainsController extends SitesAppController {
 

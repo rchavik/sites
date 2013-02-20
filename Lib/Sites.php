@@ -10,7 +10,7 @@ class Sites {
 
 	protected static $_sessionKey = 'Sites.current';
 
-	public function &getInstance() {
+	public static function &getInstance() {
 		static $instance = null;
 		if (! $instance) {
 			$instance = new Sites;
