@@ -60,6 +60,7 @@ if (!empty($this->request->query['domain_id'])) {
 					$this->Form->inputDefaults(array(
 						'label' => false,
 						'class' => 'span10',
+						'placeholder' => true,
 					));
 					echo $this->Form->input('Site.id');
 					echo $this->Form->input('Site.title', array(
