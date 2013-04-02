@@ -52,7 +52,8 @@ class MultisiteComponent extends Component {
 				}
 			}
 		}
-		$site = Sites::currentSite();
+		$sites = new Sites();
+		$site = $sites->currentSite();
 	}
 
 }
