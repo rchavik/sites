@@ -1,8 +1,6 @@
-<?php 
+<?php
 
-class SiteSchema extends CakeSchema {
-
-	public $name = 'Site';
+class SitesSchema extends CakeSchema {
 
 	public function before($event = array()) {
 		return true;
