@@ -1,5 +1,10 @@
 <?php
 
+
+if (!Configure::read('Sites.installed')) {
+	return;
+}
+
 Croogo::hookBehavior('Node', 'Sites.SiteFilter', array(
 	'relationship' => array(
 		'hasAndBelongsToMany' => array(
