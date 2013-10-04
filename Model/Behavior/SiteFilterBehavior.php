@@ -35,8 +35,13 @@ class SiteFilterBehavior extends ModelBehavior {
 			return $query;
 		}
 		$this->_setupRelationships($model, $this->settings[$model->alias]);
-		$site = Sites::currentSite();
-		$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
+        $site = Sites::currentSite();
+
+        $sites = array(Sites::ALL_SITES);
+
+        if ($site) {
+            $sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
+        }
 
 		$setting = Set::merge(
 			array('relationship' => array(), 'joins' => array()),
