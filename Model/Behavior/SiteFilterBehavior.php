@@ -40,7 +40,7 @@ class SiteFilterBehavior extends ModelBehavior {
 		$sites = array(Sites::ALL_SITES);
 
 		if ($site) {
-			array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
+			$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
 		}
 
 		$setting = Set::merge(
