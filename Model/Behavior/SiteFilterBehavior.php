@@ -123,7 +123,7 @@ class SiteFilterBehavior extends ModelBehavior {
 /**
  * retrieve domain information
  */
-	public function afterFind(Model $model, $results, $primary) {
+	public function afterFind(Model $model, $results, $primary = false) {
 		if (!$primary || $this->settings[$model->alias]['enabled'] === false) {
 			return $query;
 		}
