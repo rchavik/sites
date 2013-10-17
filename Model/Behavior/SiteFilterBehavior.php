@@ -37,11 +37,11 @@ class SiteFilterBehavior extends ModelBehavior {
 		$this->_setupRelationships($model, $this->settings[$model->alias]);
 		$site = Sites::currentSite();
 
-		$sites = array(Sites::ALL_SITES);
+		//$sites = array(Sites::ALL_SITES);
 
-		if ($site) {
-			$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
-		}
+		//if ($site) {
+		//	$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
+		//}
 
 		$setting = Set::merge(
 			array('relationship' => array(), 'joins' => array()),
@@ -56,7 +56,7 @@ class SiteFilterBehavior extends ModelBehavior {
 				// link to Site model
 				$foreignKey = $joinConfig['alias']. '.site_id';
 				if (empty($joinConfig['conditions'][$foreignKey])) {
-					$joinConfig['conditions'][$foreignKey] = $sites;
+					$joinConfig['conditions'][$foreignKey] = $site;
 				}
 
 				$foreignKey = $joinConfig['alias']. '.' . Inflector::underscore($model->alias) . '_id';
@@ -77,7 +77,7 @@ class SiteFilterBehavior extends ModelBehavior {
 			switch ($relation) {
 
 			case 'belongsTo':
-				$query['conditions'][$model->alias . '.' . $foreignKey] = $sites;
+				$query['conditions'][$model->alias . '.' . $foreignKey] = $site;
 				break;
 
 			case 'hasAndBelongsToMany':
@@ -106,10 +106,10 @@ class SiteFilterBehavior extends ModelBehavior {
 				if (is_string($query['conditions'])) {
 					$query['conditions'] = array(
 						$query['conditions'],
-						$joinModel->alias . '.' . $associationForeignKey => $sites,
+						$joinModel->alias . '.' . $associationForeignKey => $site,
 						);
 				} else {
-					$query['conditions'][$joinModel->alias . '.' . $associationForeignKey] = $sites;
+					$query['conditions'][$joinModel->alias . '.' . $associationForeignKey] = $site;
 				}
 				break;
 			}
