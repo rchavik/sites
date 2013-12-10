@@ -50,6 +50,7 @@ if (!empty($this->request->query['domain_id'])) {
 	<div class="span8">
 		<ul class="nav nav-tabs">
 			<li><a href="#site-basic" data-toggle="tab"><?php echo __('Settings'); ?></a></li>
+			<li><a href="#site-prefix" data-toggle="tab"><?php echo __('URL Prefix'); ?></a></li>
 			<li><a href="#site-domains" data-toggle="tab"><?php echo __('Domains'); ?></a></li>
 			<?php echo $this->Croogo->adminTabs(); ?>
 		</ul>
@@ -73,6 +74,15 @@ if (!empty($this->request->query['domain_id'])) {
 					echo $this->Form->input('Site.timezone');
 					echo $this->Form->input('Site.theme');
 				?>
+			</div>
+
+			<div id="site-prefix" class="tab-pane">
+			<?php
+				echo $this->Form->input('Site.url_prefix', array(
+					'placeholder' => __('URL Prefix'),
+					'help' => 'Simple Regex expression for URL Prefix to identify a site (without leading/terminating slash)',
+				));
+			?>
 			</div>
 
 			<div id="site-domains" class="tab-pane">

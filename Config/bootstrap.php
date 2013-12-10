@@ -1,6 +1,5 @@
 <?php
 
-
 if (!Configure::read('Sites.installed')) {
 	return;
 }

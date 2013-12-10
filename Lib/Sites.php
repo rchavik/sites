@@ -1,6 +1,7 @@
 <?php
 
 App::uses('CakeSession', 'Model/Datasource');
+App::uses('SitesRoute', 'Sites.Routing/Route');
 
 class Sites {
 
@@ -54,6 +55,21 @@ class Sites {
 
 	protected function _getSite($siteId = null) {
 		$Site = ClassRegistry::init('Sites.Site');
+		if (empty($siteId)) {
+			$request = Router::getRequest();
+			if (isset($request->params['site'])) {
+				$site = $Site->find('first', array(
+					'recursive' => -1,
+					'fields' => 'id',
+					'conditions' => array(
+						'url_prefix like' => '%' . $request->params['site'] . '%',
+					),
+				));
+				if (!empty($site['Site']['id'])) {
+					$siteId = $site['Site']['id'];
+				}
+			}
+		}
 		$SiteDomain = $Site->SiteDomain;
 		$SiteMeta = $Site->SiteMeta;
 		$siteDomainTable = $SiteDomain->getDataSource()->fullTableName($SiteDomain, true, true);
@@ -63,6 +79,7 @@ class Sites {
 			'fields' => array(
 				'Site.id', 'Site.title', 'Site.tagline', 'Site.theme',
 				'Site.timezone', 'Site.locale', 'Site.status',
+				'Site.url_prefix',
 				'SiteMeta.robots', 'SiteMeta.keywords', 'SiteMeta.description'
 			),
 			'joins' => array(
@@ -137,6 +154,38 @@ class Sites {
 			}
 		}
 		return $site;
+	}
+
+/**
+ * Setup site detection from prefixes in URL
+ *
+ * To use this feature, call this function from the application's routes file
+ * after CakePlugin::routes() is completed.
+ */
+	public static function setupUrlPrefixes() {
+		$cacheKey = 'SitesUrlPrefixes';
+		$regex = Cache::read($cacheKey, 'sites');
+		if ($regex === false) {
+			$Site = ClassRegistry::init('Sites.Site');
+			$sites = $Site->find('all', array(
+				'fields' => array('id', 'url_prefix'),
+				'conditions' => array(
+					'url_prefix <>' => null,
+				),
+			));
+			$regex = implode('|', Hash::extract($sites, '{n}.Site.url_prefix'));
+			Cache::write($cacheKey, $regex, 'sites');
+		}
+
+		foreach (Router::$routes as $route) {
+			$template = '/:site' . $route->template;
+			$options = array_merge(array(
+				'site' => $regex,
+				'routeClass' => 'SitesRoute',
+			), $route->options);
+			CroogoRouter::connect($template, $route->defaults, $options);
+			Router::promote();
+		}
 	}
 
 }
