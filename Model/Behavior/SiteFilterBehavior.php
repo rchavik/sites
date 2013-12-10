@@ -36,7 +36,12 @@ class SiteFilterBehavior extends ModelBehavior {
 		}
 		$this->_setupRelationships($model, $this->settings[$model->alias]);
 		$site = Sites::currentSite();
-		$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
+
+		$sites = array(Sites::ALL_SITES);
+
+		if ($site) {
+			$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
+		}
 
 		$setting = Set::merge(
 			array('relationship' => array(), 'joins' => array()),
@@ -118,7 +123,7 @@ class SiteFilterBehavior extends ModelBehavior {
 /**
  * retrieve domain information
  */
-	public function afterFind(Model $model, $results, $primary) {
+	public function afterFind(Model $model, $results, $primary = false) {
 		if (!$primary || $this->settings[$model->alias]['enabled'] === false) {
 			return $query;
 		}

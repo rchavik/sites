@@ -17,7 +17,7 @@ class SitesHelper extends AppHelper {
 /**
  * beforeRender
  */
-	public function beforeRender() {
+	public function beforeRender($viewFile) {
 		if (isset($this->params['admin'])) {
 			echo $this->Html->css('/sites/css/admin_sites', null, array('inline' => false));
 		}
