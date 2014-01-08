@@ -177,14 +177,20 @@ class Sites {
 			Cache::write($cacheKey, $regex, 'sites');
 		}
 
-		foreach (Router::$routes as $route) {
-			$template = '/:site' . $route->template;
-			$options = array_merge(array(
-				'site' => $regex,
-				'routeClass' => 'SitesRoute',
-			), $route->options);
-			CroogoRouter::connect($template, $route->defaults, $options);
-			Router::promote();
+		$routes = Cache::read('Sites.activeRoutes', 'sites');
+		if ($routes === false) {
+			foreach (Router::$routes as $route) {
+				$template = '/:site' . $route->template;
+				$options = array_merge(array(
+					'site' => $regex,
+					'routeClass' => 'SitesRoute',
+				), $route->options);
+				CroogoRouter::connect($template, $route->defaults, $options);
+				Router::promote();
+			}
+			Cache::write('Sites.activeRoutes', Router::$routes, 'sites');
+		} else {
+			Router::$routes = $routes;
 		}
 	}
 
