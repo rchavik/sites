@@ -185,7 +185,17 @@ class Sites {
 					'site' => $regex,
 					'routeClass' => 'SitesRoute',
 				), $route->options);
-				CroogoRouter::connect($template, $route->defaults, $options);
+
+				if (Configure::read('Translate')) {
+					if (strpos($template, ':locale') === false) {
+						$localized = '/:locale' . $template == '/' ? '' : $template;
+						Router::connect($localized, $route->defaults, array_merge(
+							array('locale' => '[a-z]{3}'), $options)
+						);
+						Router::promote();
+					}
+				}
+				Router::connect($template, $route->defaults, $options);
 				Router::promote();
 			}
 			Cache::write('Sites.activeRoutes', Router::$routes, 'sites');
