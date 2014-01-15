@@ -157,4 +157,26 @@ class Sites {
 		return $site;
 	}
 
+/**
+ * Setup site detection from prefixes in URL
+ *
+ * To use this feature, call this function from the application's routes file
+ * before CakePlugin::routes() is completed.
+ */
+	public static function setupUrlPrefixes() {
+		$cacheKey = 'SitesUrlPrefixes';
+		$regex = Cache::read($cacheKey, 'sites');
+		if ($regex === false) {
+			$Site = ClassRegistry::init('Sites.Site');
+			$sites = $Site->find('all', array(
+				'fields' => array('id', 'url_prefix'),
+				'conditions' => array(
+					'url_prefix <>' => null,
+				),
+			));
+			$regex = implode('|', Hash::extract($sites, '{n}.Site.url_prefix'));
+			Cache::write($cacheKey, $regex, 'sites');
+		}
+	}
+
 }
