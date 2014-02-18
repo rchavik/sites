@@ -137,4 +137,10 @@ class Site extends SitesAppModel {
 		return $scheme . '://' . $domain. $path;
 	}
 
+	public function beforeSave($options = array()) {
+		if (empty($this->data[$this->alias]['url_prefix'])) {
+			unset($this->data[$this->alias]['url_prefix']);
+		}
+	}
+
 }
