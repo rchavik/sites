@@ -73,6 +73,7 @@ if (!empty($this->request->query['domain_id'])) {
 					echo $this->Form->input('Site.locale');
 					echo $this->Form->input('Site.timezone');
 					echo $this->Form->input('Site.theme');
+					echo $this->Form->input('Site.home_url');
 				?>
 			</div>
 

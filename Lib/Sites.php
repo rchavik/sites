@@ -45,6 +45,7 @@ class Sites {
 		self::$_site = $_this->_getSite($siteId);
 		$_this->_overrideSetting(array(
 			'title', 'tagline', 'theme', 'timezone', 'locale', 'status',
+			'home_url',
 			));
 		if (!empty(self::$_site['SiteMeta'])) {
 			$_this->_overrideMeta();
@@ -79,7 +80,7 @@ class Sites {
 			'fields' => array(
 				'Site.id', 'Site.title', 'Site.tagline', 'Site.theme',
 				'Site.timezone', 'Site.locale', 'Site.status',
-				'Site.url_prefix',
+				'Site.url_prefix', 'Site.home_url',
 				'SiteMeta.robots', 'SiteMeta.keywords', 'SiteMeta.description'
 			),
 			'joins' => array(
