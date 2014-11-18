@@ -29,7 +29,7 @@ class SiteDomainsController extends SitesAppController {
 		if (!empty($this->request->data)) {
 			$this->SiteDomain->create();
 			if ($this->SiteDomain->save($this->request->data)) {
-				$this->Session->setFlash(__('The site domain has been saved'));
+				$this->Session->setFlash(__('The site domain has been saved'), 'flash');
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The site domain could not be saved. Please, try again.'));
@@ -59,7 +59,7 @@ class SiteDomainsController extends SitesAppController {
 		}
 		if (!empty($this->request->data)) {
 			if ($this->SiteDomain->save($this->request->data)) {
-				$this->Session->setFlash(__('The site domain has been saved'));
+				$this->Session->setFlash(__('The site domain has been saved'), 'flash');
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The site domain could not be saved. Please, try again.'));
@@ -79,14 +79,14 @@ class SiteDomainsController extends SitesAppController {
 
 	public function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for site domain'));
+			$this->Session->setFlash(__('Invalid id for site domain'), 'flash', array('class' => 'error'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->SiteDomain->delete($id)) {
-			$this->Session->setFlash(__('Site domain deleted'));
+			$this->Session->setFlash(__('Site domain deleted'), 'flash');
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('Site domain was not deleted'));
+		$this->Session->setFlash(__('Site domain was not deleted'), 'flash', array('class' => 'error'));
 		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 }

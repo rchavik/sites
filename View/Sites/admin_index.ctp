@@ -47,17 +47,17 @@ foreach ($sites as $site):
 		if ($site['Site']['id'] != 1):
 			$actions[] = $this->Croogo->adminRowAction('',
 				array('controller' => 'sites', 'action' => 'edit', $site['Site']['id'], '#' => 'site-domains'),
-				array('icon' => 'zoom-in', 'tooltip' => __('View Domains'))
+				array('icon' => $this->Theme->getIcon('inspect'), 'tooltip' => __('View Domains'))
 			);
 			$actions[] = $this->Croogo->adminRowAction('',
 				array('action' => 'view', $site['Site']['id']),
-				array('icon' => 'eye-open', 'tooltip' => __('View'))
+				array('icon' => $this->Theme->getIcon('read'), 'tooltip' => __('View'))
 			);
 			$actions[] = $this->Croogo->adminRowAction('',
-				array('action' => 'edit', $site['Site']['id']),
+				array('action' => $this->Theme->getIcon('edit'), $site['Site']['id']),
 				array('icon' => 'pencil', 'tooltip' => __('Edit'))
 			);
-			$actions[] = $this->Croogo->adminRowAction('', array('action' => 'delete', $site['Site']['id']), array('icon' => 'trash', 'tooltip' => __('Delete')),
+			$actions[] = $this->Croogo->adminRowAction('', array('action' => 'delete', $site['Site']['id']), array('icon' => $this->Theme->getIcon('delete'), 'tooltip' => __('Delete')),
 				__('Are you sure you want to delete # %s?', $site['Site']['id'])
 			);
 		endif;
