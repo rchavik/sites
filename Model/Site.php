@@ -1,4 +1,8 @@
 <?php
+
+App::uses('Node', 'Nodes.Model');
+App::uses('SitesAppModel', 'Sites.Model');
+
 class Site extends SitesAppModel {
 
 	public $displayField = 'title';
@@ -71,9 +75,15 @@ class Site extends SitesAppModel {
 			}
 		}
 		$model->disableFilter();
+
+		$fields = 'id';
+		if ($model instanceof Node) {
+			$fields = array('id', 'type');
+		}
+
 		$conditions = array(
 			'contain' => array('Site' => array('id')),
-			'fields' => 'id',
+			'fields' => $fields,
 			'conditions' => array(
 				$model->alias . '.status' => true,
 			)
