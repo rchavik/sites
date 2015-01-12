@@ -10,24 +10,25 @@ $this->Html
 	->addCrumb(__('Sites'), array('plugin' => 'sites', 'controller' => 'sites'))
 	;
 
-?>
-<?php $this->start('actions'); ?>
-	<li><?php echo $this->Html->link(__('New Site'), array('action' => 'add'), array('button' => 'default')); ?></li>
-	<li><?php echo $this->Html->link(__('Enable All Sites'), array('action' => 'enable'), array('button' => 'default'), 'Enable all sites?'); ?></li>
-	<li><?php echo $this->Html->link(__('Disable All Sites'), array('action' => 'disable'), array('button' => 'default'), 'Disable all sites?'); ?></li>
-<?php $this->end(); ?>
+$this->start('actions');
+	echo $this->Croogo->adminAction(__('New Site'), array('action' => 'add'));
+	echo $this->Croogo->adminAction(__('Enable All Sites'), array('action' => 'enable'), null, 'Enable all sites?');
+	echo $this->Croogo->adminAction(__('Disable All Sites'), array('action' => 'disable'), null, 'Disable all sites?');
+$this->end();
 
-<h2 class="hidden-desktop"><?php echo __('Sites');?></h2>
-<table class="table">
-<tr>
-	<th><?php echo $this->Paginator->sort('id');?></th>
-	<th><?php echo $this->Paginator->sort('title');?></th>
-	<th><?php echo $this->Paginator->sort('theme');?></th>
-	<th><?php echo $this->Paginator->sort('status');?></th>
-	<th><?php echo __('Actions');?></th>
-	<th><?php echo __('Default');?></th>
-</tr>
-<?php
+$this->append('table-heading');
+	$tableHeaders = $this->Html->tableHeaders(array(
+		$this->Paginator->sort('id'),
+		$this->Paginator->sort('title'),
+		$this->Paginator->sort('theme'),
+		$this->Paginator->sort('status'),
+		__('Actions'),
+		__('Default'),
+	));
+	echo $this->Html->tag('thead', $tableHeaders);
+$this->end();
+
+$this->append('table-body');
 $i = 0;
 foreach ($sites as $site):
 	$actions = array();
@@ -46,17 +47,17 @@ foreach ($sites as $site):
 		if ($site['Site']['id'] != 1):
 			$actions[] = $this->Croogo->adminRowAction('',
 				array('controller' => 'sites', 'action' => 'edit', $site['Site']['id'], '#' => 'site-domains'),
-				array('icon' => 'zoom-in', 'tooltip' => __('View Domains'))
+				array('icon' => $this->Theme->getIcon('inspect'), 'tooltip' => __('View Domains'))
 			);
 			$actions[] = $this->Croogo->adminRowAction('',
 				array('action' => 'view', $site['Site']['id']),
-				array('icon' => 'eye-open', 'tooltip' => __('View'))
+				array('icon' => $this->Theme->getIcon('read'), 'tooltip' => __('View'))
 			);
 			$actions[] = $this->Croogo->adminRowAction('',
-				array('action' => 'edit', $site['Site']['id']),
+				array('action' => $this->Theme->getIcon('edit'), $site['Site']['id']),
 				array('icon' => 'pencil', 'tooltip' => __('Edit'))
 			);
-			$actions[] = $this->Croogo->adminRowAction('', array('action' => 'delete', $site['Site']['id']), array('icon' => 'trash', 'tooltip' => __('Delete')),
+			$actions[] = $this->Croogo->adminRowAction('', array('action' => 'delete', $site['Site']['id']), array('icon' => $this->Theme->getIcon('delete'), 'tooltip' => __('Delete')),
 				__('Are you sure you want to delete # %s?', $site['Site']['id'])
 			);
 		endif;
@@ -91,4 +92,4 @@ foreach ($sites as $site):
 	</td>
 </tr>
 <?php endforeach; ?>
-</table>
+<?php $this->end(); ?>

@@ -11,14 +11,14 @@ $this->Html
 	->addCrumb($site['Site']['title'], $this->here)
 	;
 
-?>
-<?php $this->start('actions'); ?>
-	<li><?php echo $this->Html->link(__('Edit Site'), array('action' => 'edit', $site['Site']['id']), array('icon' => 'pencil', 'button' => 'default')); ?> </li>
-	<li><?php echo $this->Html->link(__('Delete Site'), array('action' => 'delete', $site['Site']['id']), array('icon' => 'trash', 'button' => 'default'), sprintf(__('Are you sure you want to delete # %s?'), $site['Site']['id'])); ?> </li>
-	<li><?php echo $this->Html->link(__('List Sites'), array('action' => 'index'), array('icon' => 'list', 'button' => 'default')); ?> </li>
-	<li><?php echo $this->Html->link(__('New Site'), array('action' => 'add'), array('icon' => 'plus', 'button' => 'default')); ?> </li>
-<?php $this->end(); ?>
+$this->start('actions');
+	echo $this->Html->link(__('Edit Site'), array('action' => 'edit', $site['Site']['id']), array('icon' => 'pencil', 'button' => 'default'));
+	echo $this->Html->link(__('Delete Site'), array('action' => 'delete', $site['Site']['id']), array('icon' => 'trash', 'button' => 'default'), sprintf(__('Are you sure you want to delete # %s?'), $site['Site']['id']));
+	echo $this->Html->link(__('List Sites'), array('action' => 'index'), array('icon' => 'list', 'button' => 'default'));
+	echo $this->Html->link(__('New Site'), array('action' => 'add'), array('icon' => 'plus', 'button' => 'default'));
+$this->end();
 
+?>
 <div class="row-fluid">
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php echo __('Id'); ?></dt>

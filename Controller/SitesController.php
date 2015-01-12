@@ -18,8 +18,8 @@ class SitesController extends SitesAppController {
 
 	public function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid site'), 'default', array('class' => 'error'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__('Invalid site'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('action' => 'index'));
 		}
 		$this->set('site', $this->Site->read(null, $id));
 	}
@@ -28,10 +28,10 @@ class SitesController extends SitesAppController {
 		if (!empty($this->request->data)) {
 			$this->Site->create();
 			if ($this->Site->saveAll($this->request->data)) {
-				$this->Session->setFlash(__('The site has been saved'), 'default', array('class' => 'success'));
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The site has been saved'), 'flash', array('class' => 'success'));
+				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The site could not be saved. Please, try again.'), 'default', array('class' => 'error'));
+				$this->Session->setFlash(__('The site could not be saved. Please, try again.'), 'flash', array('class' => 'error'));
 			}
 		}
 
@@ -41,15 +41,15 @@ class SitesController extends SitesAppController {
 
 	public function admin_edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash(__('Invalid site'), 'default', array('class' => 'error'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__('Invalid site'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->request->data)) {
 			if ($this->Site->saveAll($this->request->data)) {
-				$this->Session->setFlash(__('The site has been saved'), 'default', array('class' => 'success'));
-				$this->Croogo->redirect(array('action' => 'edit', $this->Site->id));
+				$this->Session->setFlash(__('The site has been saved'), 'flash', array('class' => 'success'));
+				return $this->Croogo->redirect(array('action' => 'edit', $this->Site->id));
 			} else {
-				$this->Session->setFlash(__('The site could not be saved. Please, try again.'), 'default', array('class' => 'error'));
+				$this->Session->setFlash(__('The site could not be saved. Please, try again.'), 'flash', array('class' => 'error'));
 			}
 		}
 		if (empty($this->request->data)) {
@@ -62,21 +62,21 @@ class SitesController extends SitesAppController {
 
 	public function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for site'), 'default', array('class' => 'error'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__('Invalid id for site'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('action' => 'index'));
 		}
 		if ($this->Site->delete($id)) {
-			$this->Session->setFlash(__('Site deleted'), 'default', array('class' => 'success'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__('Site deleted'), 'flash', array('class' => 'success'));
+			return $this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Site was not deleted'), 'default', array('class' => 'error'));
-		$this->redirect(array('action' => 'index'));
+		$this->Session->setFlash(__('Site was not deleted'), 'flash', array('class' => 'error'));
+		return $this->redirect(array('action' => 'index'));
 	}
 
 	public function admin_setdefault($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Setting default failed.'), 'default', array('class' => 'error'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__('Setting default failed.'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('action' => 'index'));
 		} else {
 			$this->request->data = $this->Site->find('all');
 			foreach ($this->request->data as $key => $site) {
@@ -87,23 +87,23 @@ class SitesController extends SitesAppController {
 				}
 			}
 			$this->Site->saveAll($this->request->data);
-			$this->Session->setFlash(__('Site has been set as default.'), 'default', array('class' => 'success'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__('Site has been set as default.'), 'flash', array('class' => 'success'));
+			return $this->redirect(array('action' => 'index'));
 		}
 	}
 
 	public function admin_adddomain($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('No Id has been specified!'), 'default', array('class' => 'error'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__('No Id has been specified!'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('action' => 'index'));
 		} else {
 			$this->Site->SiteDomain->create();
 			$this->request->data['domain'] = '';
 			$this->request->data['site_id'] = $id;
 			unset($this->Site->SiteDomain->validate['domain']);
 			$this->Site->SiteDomain->save($this->request->data);
-			$this->Session->setFlash(__('A new domain has been successfully added. You may now enter the desired URL.'), 'default', array('class' => 'success'));
-			$this->redirect(array('action' => 'edit', $id, '?' => array(
+			$this->Session->setFlash(__('A new domain has been successfully added. You may now enter the desired URL.'), 'flash', array('class' => 'success'));
+			return $this->redirect(array('action' => 'edit', $id, '?' => array(
 				'domain_id' => $this->Site->SiteDomain->id
 				)
 			));
@@ -112,54 +112,54 @@ class SitesController extends SitesAppController {
 
 	public function admin_deletedomain($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for site domain'), 'default', array('class' => 'error'));
-			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+			$this->Session->setFlash(__('Invalid id for site domain'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->Site->SiteDomain->delete($id)) {
-			$this->Session->setFlash(__('Site domain deleted'), 'default', array('class' => 'success'));
+			$this->Session->setFlash(__('Site domain deleted'), 'flash', array('class' => 'success'));
 			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('Site domain was not deleted'), 'default', array('class' => 'error'));
-		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+		$this->Session->setFlash(__('Site domain was not deleted'), 'flash', array('class' => 'error'));
+		return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
 	public function admin_publish_nodes($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for site'), 'default', array('class' => 'error'));
-			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+			$this->Session->setFlash(__('Invalid id for site'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->Site->publish_all($id, $this->Site->Node)) {
-			$this->Session->setFlash(__('All nodes has been published for this site %d', $id), 'default', array('class' => 'success'));
-			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+			$this->Session->setFlash(__('All nodes has been published for this site %d', $id), 'flash', array('class' => 'success'));
+			return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('Unable to publish existing nodes'), 'default', array('class' => 'error'));
-		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+		$this->Session->setFlash(__('Unable to publish existing nodes'), 'flash', array('class' => 'error'));
+		return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
 	public function admin_publish_blocks($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for site'), 'default', array('class' => 'error'));
-			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+			$this->Session->setFlash(__('Invalid id for site'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->Site->publish_all($id, $this->Site->Block)) {
-			$this->Session->setFlash(__('All blocks has been published for this site %d', $id), 'default', array('class' => 'success'));
-			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+			$this->Session->setFlash(__('All blocks has been published for this site %d', $id), 'flash', array('class' => 'success'));
+			return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('Unable to publish existing blocks'), 'default', array('class' => 'error'));
-		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+		$this->Session->setFlash(__('Unable to publish existing blocks'), 'flash', array('class' => 'error'));
+		return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
 	public function admin_publish_links($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for site'), 'default', array('class' => 'error'));
-			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+			$this->Session->setFlash(__('Invalid id for site'), 'flash', array('class' => 'error'));
+			return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
 		if ($this->Site->publish_all($id, $this->Site->Link)) {
-			$this->Session->setFlash(__('All links has been published for this site %d', $id), 'default', array('class' => 'success'));
-			$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+			$this->Session->setFlash(__('All links has been published for this site %d', $id), 'flash', array('class' => 'success'));
+			return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('Unable to publish existing links'));
-		$this->redirect(array('controller' => 'sites', 'action' => 'index'));
+		$this->Session->setFlash(__('Unable to publish existing links'), 'flash', array('class' => 'error'));
+		return $this->redirect(array('controller' => 'sites', 'action' => 'index'));
 	}
 
 	public function _writeSetting($value) {
@@ -170,12 +170,12 @@ class SitesController extends SitesAppController {
 
 	public function admin_enable() {
 		$this->_writeSetting(1);
-		$this->redirect(array('action' => 'index', 'admin' => true));
+		return $this->redirect(array('action' => 'index', 'admin' => true));
 	}
 
 	public function admin_disable() {
 		$this->_writeSetting(0);
-		$this->redirect(array('action' => 'index', 'admin' => true));
+		return $this->redirect(array('action' => 'index', 'admin' => true));
 	}
 
 }
