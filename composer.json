@@ -14,5 +14,15 @@
 	"require": {
 		"php": ">=5.3.0",
 		"composer/installers": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Sites\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Sites\\Test\\": "tests"
+		}
 	}
 }
