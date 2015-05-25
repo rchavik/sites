@@ -77,7 +77,7 @@ class Sites {
         if (empty($siteId)) {
             $query->contain(['SiteDomains' => function (Query $query) use ($host) {
                 return $query->where([
-                    'domain LIKE' => '%' . $host
+                    'SiteDomains.domain LIKE' => '%' . $host
                 ]);
             }]);
             $query->applyOptions([
