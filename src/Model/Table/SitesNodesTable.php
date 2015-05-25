@@ -6,6 +6,10 @@ use Cake\ORM\Table;
 
 class SitesNodesTable extends Table {
 
-	public $useTable = 'sites_nodes';
+    public function initialize(array $config) {
+        parent::initialize($config);
+
+        $this->table('sites_nodes');
+    }
 
 }

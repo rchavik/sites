@@ -6,6 +6,10 @@ use Cake\ORM\Table;
 
 class SitesForumCategoriesTable extends Table {
 
-	public $useTable = 'sites_forum_categories';
+    public function initialize(array $config) {
+        parent::initialize($config);
+
+        $this->table('sites_forum_categories');
+    }
 
 }

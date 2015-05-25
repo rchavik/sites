@@ -6,18 +6,14 @@ use Cake\ORM\Table;
 
 class SiteMetasTable extends Table {
 
-	public $useTable = 'site_metas';
+    public function initialize(array $config) {
+        parent::initialize($config);
 
-	public $primaryKey = 'site_id';
-
-	public $belongsTo = array(
-		'Site' => array(
-			'className' => 'Sites.Site',
-			'foreignKey' => 'site_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+        $this->table('site_metas');
+        $this->primaryKey('site_id');
+        $this->belongsTo('Sites', [
+            'className' => 'Sites.Sites'
+        ]);
+    }
 
 }
