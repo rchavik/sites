@@ -1,10 +1,12 @@
 <?php
 
+use Croogo\Croogo\CroogoNav;
+
 CroogoNav::add('extensions.children.sites', array(
 	'title' => 'Sites',
 	'url' => array(
-		'plugin' => 'sites',
-		'admin' => true,
+        'prefix' => 'admin',
+		'plugin' => 'Sites',
 		'controller' => 'sites',
 		'action' => 'index',
 	),

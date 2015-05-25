@@ -1,13 +1,22 @@
 <?php
 
-App::uses('Sites', 'Sites.Lib');
+namespace Sites\Controller\Component;
+
+use Cake\Cache\Cache;
+use Cake\Controller\Component;
+use Cake\Controller\Controller;
+use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
+use Sites\Sites;
 
 class MultisiteComponent extends Component {
 
 	public $controller = false;
 
 	protected function _setLookupFields(Controller $controller) {
-		$controller->set('sites', ClassRegistry::init('Sites.Site')->find('list'));
+		$controller->set('sites', TableRegistry::get('Sites.Sites')->find('list')->toArray());
 	}
 
 /**
@@ -25,6 +34,7 @@ class MultisiteComponent extends Component {
 			'croogo_vocabularies', 'nodes_promoted', 'nodes_term',
 			'nodes_index', 'contacts_view',
 			);
+        return;
 		$siteTitle = Inflector::slug(strtolower(Configure::read('Site.title')));
 		for ($i = 0, $ii = count($configured); $i < $ii; $i++) {
 			if (!in_array($configured[$i], $croogoCacheNames)) { continue; }
@@ -38,21 +48,21 @@ class MultisiteComponent extends Component {
 		}
 	}
 
-	public function startup(Controller $controller) {
+	public function startup(Event $event) {
+        /** @var Controller $controller */
+        $controller = $event->subject();
+        if (1 == $controller->Auth->user('role_id') && isset($controller->params['admin'])) {
+            if ($controller->{$controller->modelClass}) {
+                $Model =& $controller->{$controller->modelClass};
+                if ($Model instanceof Model && $Model->useTable && $Model->Behaviors->attached('SiteFilter')) {
+                    $Model->Behaviors->SiteFilter->disableFilter($Model);
+                }
+            }
+        }
+        $site = Sites::currentSite();
+
 		$this->_setLookupFields($controller);
 		$this->_setupCache($controller);
-	}
-
-	public function initialize(Controller $controller, $settings = array()) {
-		if (1 == $controller->Auth->user('role_id') && isset($controller->params['admin'])) {
-			if ($controller->{$controller->modelClass}) {
-				$Model =& $controller->{$controller->modelClass};
-				if ($Model instanceof Model && $Model->useTable && $Model->Behaviors->attached('SiteFilter')) {
-					$Model->Behaviors->SiteFilter->disableFilter($Model);
-				}
-			}
-		}
-		$site = Sites::currentSite();
 	}
 
 }

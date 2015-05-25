@@ -1,6 +1,11 @@
 <?php
 
-App::uses('CakeSession', 'Model/Datasource');
+namespace Sites;
+
+use Cake\Core\Configure;
+use Cake\Network\Request;
+use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 
 class Sites {
 
@@ -48,59 +53,53 @@ class Sites {
 		if (!empty(self::$_site['SiteMeta'])) {
 			$_this->_overrideMeta();
 		}
-		CakeSession::write(self::$_sessionKey, self::$_site);
+        $request = Request::createFromGlobals();
+        $request->session()->write(self::$_sessionKey, self::$_site);
 		return self::$_site;
 	}
 
 	protected function _getSite($siteId = null) {
-		$Site = ClassRegistry::init('Sites.Site');
-		$SiteDomain = $Site->SiteDomain;
-		$SiteMeta = $Site->SiteMeta;
-		$siteDomainTable = $SiteDomain->getDataSource()->fullTableName($SiteDomain, true, true);
-		$siteMetaTable = $Site->SiteMeta->getDataSource()->fullTableName($SiteMeta, true, true);
-		$options = array(
-			'recursive' => false,
-			'fields' => array(
-				'Site.id', 'Site.title', 'Site.tagline', 'Site.theme',
-				'Site.timezone', 'Site.locale', 'Site.status',
-				'SiteMeta.robots', 'SiteMeta.keywords', 'SiteMeta.description'
-			),
-			'joins' => array(
-				array(
-					'table' => $siteDomainTable,
-					'alias' => 'SiteDomain',
-					'conditions' => array(
-						'SiteDomain.site_id = Site.id',
-						),
-					),
-				),
-				array(
-					'table' => $siteMetaTable,
-					'alias' => 'SiteMeta',
-					'conditions' => array(
-						'SiteMeta.site_id = Site.id',
-					),
-				),
-			);
+		$Sites = TableRegistry::get('Sites.Sites');
+		$SiteDomains = $Sites->SiteDomains;
+		$SiteMeta = $Sites->SiteMetas;
+
+        /** @var Query $query */
+        $query = $Sites->find()->select([
+            'Sites.id', 'Sites.title', 'Sites.tagline', 'Sites.theme',
+            'Sites.timezone', 'Sites.locale', 'Sites.status',
+            'SiteMetas.robots', 'SiteMetas.keywords', 'SiteMetas.description'
+        ])->contain([
+            'SiteDomains',
+            'SiteMetas',
+        ]);
 
 		$host = env('HTTP_HOST');
 		if (empty($siteId)) {
-			$options['joins'][0]['conditions']['SiteDomain.domain LIKE'] = '%' . $host;
-			$options['cache'] = array(
-				'name' => 'sites_' . $host,
-				'config' => 'sites',
-			);
+            $query->contain(['SiteDomains' => function (Query $query) use ($host) {
+                return $query->where([
+                    'domain LIKE' => '%' . $host
+                ]);
+            }]);
+            $query->applyOptions([
+                'cache' => [
+                    'name' => 'sites_' . $host,
+                    'config' => 'sites',
+                ]
+            ]);
 		} else {
-			$options['conditions'] = array('Site.id' => $siteId);
-			$options['cache'] = array(
-				'name' => 'sites_' . $siteId,
-				'config' => 'sites',
-			);
+            $query->where([
+                'Sites.id' => $siteId
+            ]);
+            $query->applyOptions([
+                'cache' => [
+                    'name' => 'sites_' . $siteId,
+                    'config' => 'sites',
+                ]
+            ]);
 		}
-
-		$site = $Site->find('first', $options);
+		$site = $query->first();
 		if (empty($site)) {
-			$site = $Site->find('first', array(
+			$site = $Sites->find('first', array(
 				'recursive' => false,
 				'fields' => array('id', 'title', 'tagline', 'theme', 'timezone', 'locale', 'status'),
 				'joins' => array(
@@ -122,16 +121,16 @@ class Sites {
 				'conditions' => array( 'Site.default' => 1 ),
 			));
 		}
-		if ($siteId === null && CakeSession::check(self::$_sessionKey) && $active = CakeSession::read(self::$_sessionKey)) {
-			$found = $SiteDomain->find('count', array(
-				'cache' => array(
-					'name' => 'sites_count_' . $host,
-					'config' => 'sites',
-				),
-				'conditions' => array(
-					'SiteDomain.domain' => $host,
-				)
-			));
+        $request = Request::createFromGlobals();
+		if ($siteId === null && $request->session()->check(self::$_sessionKey) && $active = $request->session()->read(self::$_sessionKey)) {
+			$found = $SiteDomains->find('all', [
+                'cache' => [
+                    'name' => 'sites_count_' . $host,
+                    'config' => 'sites',
+                ]
+            ])->where([
+                'SiteDomains.domain' => $host,
+            ])->count();
 			if ($found == 0) {
 				$site = $active;
 			}

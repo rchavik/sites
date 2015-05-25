@@ -1,8 +1,21 @@
 <?php
 
-App::uses('Sites', 'Sites.Lib');
+namespace Sites\Model\Behavior;
 
-class SiteFilterBehavior extends ModelBehavior {
+use Cake\Event\Event;
+use Cake\ORM\Behavior;
+use Cake\ORM\Query;
+use Cake\Utility\Hash;
+use Sites\Sites;
+
+class SiteFilterBehavior extends Behavior {
+
+    protected $_defaultConfig = [
+        'relationship' => false,
+        'joins' => array(),
+        'enabled' => true,
+        'filter' => true,
+    ];
 
 	public function setup(Model $model, $config = array()) {
 		$model->Behaviors->setPriority(array('SiteFilter' => 5));
@@ -16,9 +29,9 @@ class SiteFilterBehavior extends ModelBehavior {
 		$this->_setupRelationships($model, $config);
 	}
 
-	protected function _setupRelationships(Model $model, $config = array()) {
-		if (!empty($this->settings[$model->alias]['relationship'])) {
-			$model->bindModel($config['relationship'], false);
+	protected function _setupRelationships($config = array()) {
+		if (!empty($this->config('relationship'))) {
+			$this->_table->addAssociations($config['relationship']);
 		}
 	}
 
@@ -30,93 +43,75 @@ class SiteFilterBehavior extends ModelBehavior {
 		$this->settings[$model->alias]['filter'] = false;
 	}
 
-	public function beforeFind(Model $model, $query) {
-		if ($this->settings[$model->alias]['enabled'] === false) {
+	public function beforeFind(Event $event, Query $query) {
+		if ($this->config('enabled') === false) {
 			return $query;
 		}
-		$this->_setupRelationships($model, $this->settings[$model->alias]);
+		$this->_setupRelationships($this->config());
 		$site = Sites::currentSite();
 
 		$sites = array(Sites::ALL_SITES);
 
 		if ($site) {
-			$sites = array_unique(array(Sites::ALL_SITES, $site['Site']['id']));
+			$sites = array_unique(array(Sites::ALL_SITES, $site->id));
 		}
 
-		$setting = Set::merge(
+		$setting = Hash::merge(
 			array('relationship' => array(), 'joins' => array()),
-			$this->settings[$model->alias]
+			$this->config()
 		);
 		extract($setting);
 
-		if (!empty($joins)) {
-			foreach ($joins as $join => &$joinConfig) {
-				if (empty($joinConfig)) continue;
+//        var_dump($query);
 
-				// link to Site model
-				$foreignKey = $joinConfig['alias']. '.site_id';
-				if (empty($joinConfig['conditions'][$foreignKey])) {
-					$joinConfig['conditions'][$foreignKey] = $sites;
-				}
+//		if (!empty($joins)) {
+//			foreach ($joins as $join => &$joinConfig) {
+//				if (empty($joinConfig)) continue;
+//
+//				// link to Site model
+//				$foreignKey = $joinConfig['alias']. '.site_id';
+//				if (empty($joinConfig['conditions'][$foreignKey])) {
+//					$joinConfig['conditions'][$foreignKey] = $sites;
+//				}
+//
+//				$foreignKey = $joinConfig['alias']. '.' . Inflector::underscore($model->alias) . '_id';
+//				$condition = "{$model->alias}.{$model->primaryKey} = {$foreignKey}";
+//				if (!in_array($condition, $joinConfig['conditions'])) {
+//					$joinConfig['conditions'][] = $condition;
+//				}
+//			}
+//		}
 
-				$foreignKey = $joinConfig['alias']. '.' . Inflector::underscore($model->alias) . '_id';
-				$condition = "{$model->alias}.{$model->primaryKey} = {$foreignKey}";
-				if (!in_array($condition, $joinConfig['conditions'])) {
-					$joinConfig['conditions'][] = $condition;
-				}
-			}
-		}
-
-		if (!empty($query['joins'])) {
-			$joins = Set::merge($query['joins'], $joins);
-		}
-
-		if (!empty($relationship) && $this->settings[$model->alias]['filter']) {
-			$relation = key($relationship);
-			$foreignKey = $model->{$relation}['Site']['foreignKey'];
+		if (!empty($relationship) && $this->config('filter')) {
+			$relation = key($relationship[key($relationship)]);
+            $foreignKey = $this->_table->association($relation)->foreignKey();
 			switch ($relation) {
 
 			case 'belongsTo':
-				$query['conditions'][$model->alias . '.' . $foreignKey] = $sites;
+				$query->where([$this->_table->alias() . '.' . $foreignKey . ' IN' => $sites]);
 				break;
 
-			case 'hasAndBelongsToMany':
+			case 'belongsToMany':
 			default:
-				$with = $model->{$relation}['Site']['with'];
-				if (strpos($with, '.') !== false) {
-					list($pluginName, $with) = pluginSplit($with);
-				}
-				$joinModel = $model->{$with};
-				$ds = $joinModel->getDataSource();
-				$associationForeignKey = $model->{$relation}['Site']['associationForeignKey'];
+				$joinModel = $this->_table->{$relation}->junction();
+				$associationForeignKey = $this->_table->{$relation}->targetForeignKey();
 
-				$currentJoins = Set::extract('{n}.alias', $joins);
-				if (!empty($currentJoins) && in_array($joinModel->alias, $currentJoins)) {
-					break;
-				}
+                $query->join([
+                    'type' => 'LEFT',
+                    'table' => $joinModel->table(),
+                    'alias' => $joinModel->alias(),
+                    'conditions' => [
+                        $this->_table->alias() . '.' . $this->_table->primaryKey() . ' = ' . $joinModel->alias() . '.' . $foreignKey,
+                    ],
+                ]);
 
-				$joins[] = array(
-					'type' => 'LEFT',
-					'table' => $ds->fullTableName($joinModel, true, true),
-					'alias' => $joinModel->alias,
-					'conditions' => array(
-						"{$model->alias}.{$model->primaryKey} = {$joinModel->alias}.$foreignKey",
-						),
-					);
-				if (is_string($query['conditions'])) {
-					$query['conditions'] = array(
-						$query['conditions'],
-						$joinModel->alias . '.' . $associationForeignKey => $sites,
-						);
-				} else {
-					$query['conditions'][$joinModel->alias . '.' . $associationForeignKey] = $sites;
-				}
+                $query->where([
+                    $joinModel->alias() . '.' . $associationForeignKey . ' IN' => $sites
+                ]);
 				break;
 			}
 		}
 
-		$query['joins'] = $joins;
-		unset($query['recursive']);
 		return $query;
 	}
 

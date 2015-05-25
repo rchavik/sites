@@ -1,5 +1,10 @@
 <?php
-class Site extends SitesAppModel {
+
+namespace Sites\Model\Table;
+
+use Cake\ORM\Table;
+
+class SitesTable extends Table {
 
 	public $displayField = 'title';
 
@@ -61,7 +66,19 @@ class Site extends SitesAppModel {
 		'default' => true,
 	);
 
-	public function publish_all($siteId, &$model) {
+    public function initialize(array $config) {
+        $this->hasOne('SiteMetas', [
+           'className' => 'Sites.SiteMetas'
+        ]);
+        $this->hasMany('SiteDomains', [
+            'className' => 'Sites.SiteDomains'
+        ]);
+        $this->belongsToMany('Nodes', [
+           ''
+        ]);
+    }
+
+    public function publish_all($siteId, &$model) {
 		$model->Behaviors->attach('Containable');
 		foreach (array('hasMany', 'belongsTo', 'hasAndBelongsToMany') as $relation) {
 			foreach ($model->{$relation} as $relatedModel => $config) {

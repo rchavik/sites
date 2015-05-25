@@ -1,6 +1,12 @@
 <?php
 
-class SitesHelper extends AppHelper {
+namespace Sites\View\Helper;
+
+use Cake\ORM\TableRegistry;
+use Cake\View\Helper;
+use Cake\View\View;
+
+class SitesHelper extends Helper {
 
 	public $helpers = array(
 		'Html',
@@ -11,7 +17,7 @@ class SitesHelper extends AppHelper {
  */
 	public function __construct(View $view, $settings = array()) {
 		parent::__construct($view, $settings);
-		$this->Site = ClassRegistry::init('Sites.Site');
+		$this->Sites = TableRegistry::get('Sites.Sites');
 	}
 
 /**
@@ -40,7 +46,7 @@ class SitesHelper extends AppHelper {
 				'Taxonomy', 'Translate', 'Users',
 			);
 			$domain = in_array($plugin, $corePlugins) ? null : env('HTTP_HOST');
-			$href = $this->Site->href($this->here, $domain);
+			$href = $this->Sites->href($this->here, $domain);
 		}
 		if ($href) {
 			$link = $this->Html->tag('link', null, array(
@@ -61,12 +67,12 @@ class SitesHelper extends AppHelper {
 
 		if (strpos($node['Node']['path'], 'http') === false) {
 			if ($node['Site'][0]['id'] == Sites::ALL_SITES) {
-				$site = $this->Site->find('default');
+				$site = $this->Sites->find('default');
 				$domain = $site['SiteDomain'][0]['domain'];
 			} else {
 				$domain = $node['Site'][0]['SiteDomain'][0]['domain'];
 			}
-			return $this->Site->href($node['Node']['path'], $domain);
+			return $this->Sites->href($node['Node']['path'], $domain);
 		}
 
 		return $node['Node']['path'];
