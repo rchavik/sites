@@ -1,22 +1,16 @@
 <?php
 
-App::uses('SitesAppController', 'Sites.Controller');
+namespace Sites\Controller\Admin;
 
-class SitesController extends SitesAppController {
+use Croogo\Croogo\Controller\CroogoAppController;
 
-    public $name = 'Sites';
+class SitesController extends CroogoAppController {
 
-    public $uses = array('Sites.Site');
-
-    public $helpers = array(
-        'Sites.Sites',
-    );
-
-    public function admin_index() {
+    public function index() {
         $this->set('sites', $this->paginate());
     }
 
-    public function admin_view($id = null) {
+    public function view($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid site'));
             $this->redirect(array('action' => 'index'));
@@ -24,7 +18,7 @@ class SitesController extends SitesAppController {
         $this->set('site', $this->Site->read(null, $id));
     }
 
-    public function admin_add() {
+    public function add() {
         if (!empty($this->request->data)) {
             $this->Site->create();
             if ($this->Site->saveAll($this->request->data)) {
@@ -39,7 +33,7 @@ class SitesController extends SitesAppController {
         $this->render('admin_edit');
     }
 
-    public function admin_edit($id = null) {
+    public function edit($id = null) {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Invalid site'));
             $this->redirect(array('action' => 'index'));
@@ -60,7 +54,7 @@ class SitesController extends SitesAppController {
         $this->set('title_for_layout', __('Edit Site'));
     }
 
-    public function admin_delete($id = null) {
+    public function delete($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid id for site'));
             $this->redirect(array('action' => 'index'));
@@ -73,7 +67,7 @@ class SitesController extends SitesAppController {
         $this->redirect(array('action' => 'index'));
     }
 
-    public function admin_setdefault($id = null) {
+    public function setdefault($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Setting default failed.'));
             $this->redirect(array('action' => 'index'));
@@ -92,7 +86,7 @@ class SitesController extends SitesAppController {
         }
     }
 
-    public function admin_adddomain($id = null) {
+    public function adddomain($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('No Id has been specified!'));
             $this->redirect(array('action' => 'index'));
@@ -110,7 +104,7 @@ class SitesController extends SitesAppController {
         }
     }
 
-    public function admin_deletedomain($id = null) {
+    public function deletedomain($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid id for site domain'));
             $this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -123,7 +117,7 @@ class SitesController extends SitesAppController {
         $this->redirect(array('controller' => 'sites', 'action' => 'index'));
     }
 
-    public function admin_publish_nodes($id = null) {
+    public function publish_nodes($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid id for site'));
             $this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -136,7 +130,7 @@ class SitesController extends SitesAppController {
         $this->redirect(array('controller' => 'sites', 'action' => 'index'));
     }
 
-    public function admin_publish_blocks($id = null) {
+    public function publish_blocks($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid id for site'));
             $this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -149,7 +143,7 @@ class SitesController extends SitesAppController {
         $this->redirect(array('controller' => 'sites', 'action' => 'index'));
     }
 
-    public function admin_publish_links($id = null) {
+    public function publish_links($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid id for site'));
             $this->redirect(array('controller' => 'sites', 'action' => 'index'));
@@ -168,12 +162,12 @@ class SitesController extends SitesAppController {
         $this->Setting->write('Site.status', $value);
     }
 
-    public function admin_enable() {
+    public function enable() {
         $this->_writeSetting(1);
         $this->redirect(array('action' => 'index', 'admin' => true));
     }
 
-    public function admin_disable() {
+    public function disable() {
         $this->_writeSetting(0);
         $this->redirect(array('action' => 'index', 'admin' => true));
     }
