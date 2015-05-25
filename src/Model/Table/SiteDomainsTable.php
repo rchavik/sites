@@ -1,5 +1,10 @@
 <?php
-class SiteDomain extends SitesAppModel {
+
+namespace Sites\Model\Table;
+
+use Cake\ORM\Table;
+
+class SiteDomainsTable extends Table {
 
 	public $useTable = 'site_domains';
 

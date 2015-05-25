@@ -1,5 +1,10 @@
 <?php
-class SiteMeta extends SitesAppModel {
+
+namespace Sites\Model\Table;
+
+use Cake\ORM\Table;
+
+class SiteMetasTable extends Table {
 
 	public $useTable = 'site_metas';
 
