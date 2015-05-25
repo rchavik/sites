@@ -1,31 +1,31 @@
 <?php
 
-$this->extend('/Common/admin_edit');
+$this->extend('Croogo/Croogo./Common/admin_edit');
 
 
-$this->Html
-	->addCrumb('', '/admin', array('icon' => 'home'))
-	->addCrumb(__('Extensions'), array(
-		'plugin' => 'extensions', 'controller' => 'extensions_plugins',
-	))
-	->addCrumb(__('Sites'), array('controller' => 'sites', 'action' => 'index'))
+$this->CroogoHtml
+	->addCrumb('', '/admin', ['icon' => 'home'])
+	->addCrumb(__('Extensions'), [
+		'plugin' => 'Croogo/Extensions', 'controller' => 'ExtensionsPlugins',
+    ])
+	->addCrumb(__('Sites'), ['controller' => 'Sites', 'action' => 'index'])
 	;
 
-if (!empty($this->data['Site']['id'])) {
-	$crumb = $this->data['Site']['title'];
+if ($site->title) {
+	$crumb = $site->title;
 } else {
 	$crumb = __('Add');
 }
-$this->Html->addCrumb($crumb, $this->here);
+$this->CroogoHtml->addCrumb($crumb, ['action' => 'add']);
 
 ?>
 
 <?php $this->start('actions'); ?>
 <?php
 ?>
-	<?php echo $this->Html->link(__('Back'), array('action'=>'index'), array('button' => 'default')); ?>
-	<?php if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) : ?>
-	<?php echo $this->Html->link(__('Add Domain'), array('action' => 'adddomain', $this->data['Site']['id']), array(
+	<?php echo $this->CroogoHtml->link(__('Back'), array('action'=>'index'), array('button' => 'default')); ?>
+	<?php if (isset($site->site_domains) && count($site->site_domains) > 0 ) : ?>
+	<?php echo $this->CroogoHtml->link(__('Add Domain'), array('action' => 'adddomain', $site->id), array(
 		'icon' => 'plus', 'button' => 'default',
 	)); ?>
 	<?php endif; ?>
@@ -45,7 +45,7 @@ if (!empty($this->request->query['domain_id'])) {
 }
 
 ?>
-<?php echo $this->Form->create('Site');?>
+<?php echo $this->CroogoForm->create($site);?>
 <div class="row-fluid">
 	<div class="span8">
 		<ul class="nav nav-tabs">
@@ -57,83 +57,82 @@ if (!empty($this->request->query['domain_id'])) {
 		<div class="tab-content">
 			<div id="site-basic" class="tab-pane">
 				<?php
-					$this->Form->inputDefaults(array(
-						'label' => false,
+					$this->CroogoForm->templates(array(
 						'class' => 'span10',
 						'placeholder' => true,
 					));
-					echo $this->Form->input('Site.id');
-					echo $this->Form->input('Site.title', array(
+					echo $this->CroogoForm->input('id');
+					echo $this->CroogoForm->input('title', array(
 						'placeholder' => __('Title'),
 					));
-					echo $this->Form->input('Site.description');
-					echo $this->Form->input('Site.tagline');
-					echo $this->Form->input('Site.email');
-					echo $this->Form->input('Site.locale');
-					echo $this->Form->input('Site.timezone');
-					echo $this->Form->input('Site.theme');
+					echo $this->CroogoForm->input('description');
+					echo $this->CroogoForm->input('tagline');
+					echo $this->CroogoForm->input('email');
+					echo $this->CroogoForm->input('locale');
+					echo $this->CroogoForm->input('timezone');
+					echo $this->CroogoForm->input('theme');
 				?>
 			</div>
 
 			<div id="site-domains" class="tab-pane">
 			<?php
-				if (isset($this->data['SiteDomain']) && count($this->data['SiteDomain']) > 0 ) {
-					foreach ( $this->data['SiteDomain'] as $key => $value ) {
-						if (count($this->data['SiteDomain']) > 1) {
-							$after = ' ' . $this->Html->link(__('Delete'),
-								array('action' => 'deletedomain', $this->data['SiteDomain'][$key]['id']),
+				if (isset($site->site_domains) && count($site->site_domains) > 0 ) {
+					foreach ( $site->site_domains as $key => $value ) {
+						if (count($site->site_domains) > 1) {
+							$after = ' ' . $this->CroogoHtml->link(__('Delete'),
+								array('action' => 'deletedomain', $site->site_domains[$key]->id),
 								array('button' => 'danger')
 							);
 						}
 						if (!isset($after)) {
 							$after = '';
 						}
-						echo $this->Form->input('SiteDomain.' .$key . '.id');
-						echo $this->Form->input('SiteDomain.' .$key . '.domain', array(
-							'data-domain_id' => $this->data['SiteDomain'][$key]['id'],
+						echo $this->CroogoForm->input('site_domains.' .$key . '.id');
+						echo $this->CroogoForm->input('site_domains.' .$key . '.domain', array(
+							'data-domain_id' => $site->site_domains[$key]->id,
 							'after' => $after,
 						));
 					}
 
 				} else {
-					echo $this->Form->input('SiteDomain.0.id');
-					echo $this->Form->input('SiteDomain.0.domain');
+					echo $this->CroogoForm->input('SiteDomain.0.id');
+					echo $this->CroogoForm->input('SiteDomain.0.domain');
 				}
 			?>
 			</div>
 
-			<?php echo $this->Layout->adminTabs(); ?>
+			<?php echo $this->Croogo->adminTabs();; ?>
 		</div>
 	</div>
 
 	<div class="span4">
 	<?php
-		echo $this->Html->beginBox(__('Publishing')) .
-			$this->Form->button(__('Apply'), array('name' => 'apply', 'class' => 'btn')) .
-			$this->Form->button(__('Save'), array('class' => 'btn btn-primary')) .
-			$this->Html->link(__('Cancel'), array('action' => 'index'), array('class' => 'cancel btn btn-danger')) .
+		echo $this->CroogoHtml->beginBox(__('Publishing')) .
+			$this->CroogoForm->button(__('Apply'), array('name' => 'apply', 'class' => 'btn')) .
+			$this->CroogoForm->button(__('Save'), array('class' => 'btn btn-primary')) .
+			$this->CroogoHtml->link(__('Cancel'), array('action' => 'index'), array('class' => 'cancel btn btn-danger')) .
 
-			$this->Form->input('Site.status', array(
+			$this->CroogoForm->input('status', array(
 				'label' => __('Status'),
 				'class' => false,
 			));
-		echo $this->Html->endBox();
+		echo $this->CroogoHtml->endBox();
 
-		echo $this->Html->beginBox(__('Meta')) .
-			$this->Form->input('SiteMeta.robots', array(
+		echo $this->CroogoHtml->beginBox(__('Meta')) .
+			$this->CroogoForm->input('SiteMeta.robots', array(
 				'tooltip' => 'Robots',
 			)) .
-			$this->Form->input('SiteMeta.keywords', array(
+			$this->CroogoForm->input('SiteMeta.keywords', array(
 				'tooltip' => 'Keywords',
 			)) .
-			$this->Form->input('SiteMeta.description', array(
+			$this->CroogoForm->input('SiteMeta.description', array(
 				'tooltip' => 'Description',
 			));
-		echo $this->Html->endBox();
+		echo $this->CroogoHtml->endBox();
 
 		echo $this->Croogo->adminBoxes();
 	?>
 	</div>
 
 </div>
-<?php echo $this->Form->end(); ?>
+<?php echo $this->CroogoForm->end(); ?>

@@ -3,7 +3,11 @@
 namespace Sites\Controller\Admin;
 
 use Croogo\Croogo\Controller\CroogoAppController;
+use Sites\Model\Table\SitesTable;
 
+/**
+ * @property SitesTable Sites
+ */
 class SitesController extends CroogoAppController {
 
     public function index() {
@@ -19,6 +23,8 @@ class SitesController extends CroogoAppController {
     }
 
     public function add() {
+        $site = $this->Sites->newEntity();
+
         if (!empty($this->request->data)) {
             $this->Site->create();
             if ($this->Site->saveAll($this->request->data)) {
@@ -29,15 +35,17 @@ class SitesController extends CroogoAppController {
             }
         }
 
+        $this->set(compact('site'));
+
         $this->set('title_for_layout', __('Create new Site'));
-        $this->render('admin_edit');
+//        $this->render('admin_edit');
     }
 
     public function edit($id = null) {
-        if (!$id && empty($this->request->data)) {
-            $this->Session->setFlash(__('Invalid site'));
-            $this->redirect(array('action' => 'index'));
-        }
+        $site = $this->Sites->get($id, [
+            'contain' => ['SiteDomains', 'SiteMetas']
+        ]);
+
         if (!empty($this->request->data)) {
             if ($this->Site->saveAll($this->request->data)) {
                 $this->Session->setFlash(__('The site has been saved'));
@@ -46,10 +54,8 @@ class SitesController extends CroogoAppController {
                 $this->Session->setFlash(__('The site could not be saved. Please, try again.'));
             }
         }
-        if (empty($this->request->data)) {
-            $this->Site->contain(array('SiteDomain', 'SiteMeta'));
-            $this->request->data = $this->Site->read(null, $id);
-        }
+
+        $this->set(compact('site'));
 
         $this->set('title_for_layout', __('Edit Site'));
     }
