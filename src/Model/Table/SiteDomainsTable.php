@@ -22,7 +22,7 @@ class SiteDomainsTable extends Table {
     public function initialize(array $config) {
         parent::initialize($config);
 
-        $this->table('site_metas');
+        $this->table('site_domains');
         $this->belongsTo('Sites', [
             'className' => 'Sites.Sites'
         ]);
