@@ -4,6 +4,7 @@ namespace Sites\Controller\Admin;
 
 use Croogo\Croogo\Controller\CroogoAppController;
 use Sites\Model\Table\SitesTable;
+use Cake\ORM\TableRegistry;
 
 /**
  * @property SitesTable Sites
@@ -15,30 +16,28 @@ class SitesController extends CroogoAppController {
     }
 
     public function view($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(__('Invalid site'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->set('site', $this->Site->read(null, $id));
+        $site = $this->Sites->get($id);
+
+        $this->set('site', $site);
     }
 
     public function add() {
         $site = $this->Sites->newEntity();
 
-        if (!empty($this->request->data)) {
-            $this->Site->create();
-            if ($this->Site->saveAll($this->request->data)) {
-                $this->Session->setFlash(__('The site has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The site could not be saved. Please, try again.'));
+        if ($this->request->is('post')) {
+            $site = $this->Sites->patchEntity($site, $this->request->data);
+
+            if ($this->Sites->save($site)) {
+                $this->Flash->success(__('The site has been saved'));
+
+                return $this->redirect(array('action' => 'index'));
             }
+            $this->Flash->error(__('The site could not be saved. Please, try again.'));
         }
 
         $this->set(compact('site'));
 
         $this->set('title_for_layout', __('Create new Site'));
-//        $this->render('admin_edit');
     }
 
     public function edit($id = null) {
@@ -46,50 +45,42 @@ class SitesController extends CroogoAppController {
             'contain' => ['SiteDomains', 'SiteMetas']
         ]);
 
-        if (!empty($this->request->data)) {
-            if ($this->Site->saveAll($this->request->data)) {
-                $this->Session->setFlash(__('The site has been saved'));
-                $this->Croogo->redirect(array('action' => 'edit', $this->Site->id));
-            } else {
-                $this->Session->setFlash(__('The site could not be saved. Please, try again.'));
+        if ($this->request->is('put')) {
+            $site = $this->Sites->patchEntity($site, $this->request->data);
+
+            if ($this->Sites->save($site)) {
+                $this->Flash->success(__('The site has been saved'));
+
+                return $this->Croogo->redirect(array('action' => 'edit', $site->id));
             }
+
+            $this->Flash->error(__('The site could not be saved. Please, try again.'));
         }
 
         $this->set(compact('site'));
-
-        $this->set('title_for_layout', __('Edit Site'));
     }
 
     public function delete($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(__('Invalid id for site'));
-            $this->redirect(array('action' => 'index'));
+        $site = $this->Sites->get($id);
+
+        if (!$this->Sites->delete($site)) {
+            $this->Flash->error(__('Site was not deleted'));
+
+            return $this->redirect(array('action' => 'index'));
         }
-        if ($this->Site->delete($id)) {
-            $this->Session->setFlash(__('Site deleted'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->Session->setFlash(__('Site was not deleted'));
-        $this->redirect(array('action' => 'index'));
+
+        $this->Flash->success(__('Site deleted'));
+
+        return $this->redirect(array('action' => 'index'));
     }
 
-    public function setdefault($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(__('Setting default failed.'));
-            $this->redirect(array('action' => 'index'));
-        } else {
-            $this->request->data = $this->Site->find('all');
-            foreach ($this->request->data as $key => $site) {
-                if ($site['Site']['id'] == $id) {
-                    $this->request->data[$key]['Site']['default'] = 1;
-                } else {
-                    $this->request->data[$key]['Site']['default'] = 0;
-                }
-            }
-            $this->Site->saveAll($this->request->data);
-            $this->Session->setFlash(__('Site has been set as default.'));
-            $this->redirect(array('action' => 'index'));
-        }
+    public function setDefault($id = null) {
+        $site = $this->Sites->get($id);
+
+        $this->Sites->setDefault($site);
+
+        $this->Flash->success(__('Site has been set as default.'));
+        $this->redirect(array('action' => 'index'));
     }
 
     public function adddomain($id = null) {
@@ -123,43 +114,46 @@ class SitesController extends CroogoAppController {
         $this->redirect(array('controller' => 'sites', 'action' => 'index'));
     }
 
-    public function publish_nodes($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(__('Invalid id for site'));
-            $this->redirect(array('controller' => 'sites', 'action' => 'index'));
+    public function publishNodes($id = null) {
+        $site = $this->Sites->get($id);
+
+        if (!$this->Sites->publishAll($site, $this->Sites->Nodes)) {
+            $this->Flash->error(__('Unable to publish existing nodes'));
+
+            return $this->redirect(array('action' => 'index'));
         }
-        if ($this->Site->publish_all($id, $this->Site->Node)) {
-            $this->Session->setFlash(__('All nodes has been published for this site %d', $id), 'default', array('class' => 'success'));
-            $this->redirect(array('controller' => 'sites', 'action' => 'index'));
-        }
-        $this->Session->setFlash(__('Unable to publish existing nodes'));
-        $this->redirect(array('controller' => 'sites', 'action' => 'index'));
+
+        $this->Flash->success(__('All nodes has been published for this site {0}', $site->title));
+
+        return $this->redirect(array('action' => 'index'));
     }
 
-    public function publish_blocks($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(__('Invalid id for site'));
-            $this->redirect(array('controller' => 'sites', 'action' => 'index'));
+    public function publishBlocks($id = null) {
+        $site = $this->Sites->get($id);
+
+        if (!$this->Sites->publishAll($site, $this->Sites->Blocks)) {
+            $this->Flash->error(__('Unable to publish existing blocks'));
+
+            return $this->redirect(array('action' => 'index'));
         }
-        if ($this->Site->publish_all($id, $this->Site->Block)) {
-            $this->Session->setFlash(__('All blocks has been published for this site %d', $id), 'default', array('class' => 'success'));
-            $this->redirect(array('controller' => 'sites', 'action' => 'index'));
-        }
-        $this->Session->setFlash(__('Unable to publish existing blocks'));
-        $this->redirect(array('controller' => 'sites', 'action' => 'index'));
+
+        $this->Flash->success(__('All blocks has been published for this site {0}', $site->title));
+
+        return $this->redirect(array('action' => 'index'));
     }
 
     public function publish_links($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(__('Invalid id for site'));
-            $this->redirect(array('controller' => 'sites', 'action' => 'index'));
+        $site = $this->Sites->get($id);
+
+        if (!$this->Sites->publishAll($site, $this->Sites->Links)) {
+            $this->Flash->error(__('Unable to publish existing links'));
+
+            return $this->redirect(array('action' => 'index'));
         }
-        if ($this->Site->publish_all($id, $this->Site->Link)) {
-            $this->Session->setFlash(__('All links has been published for this site %d', $id), 'default', array('class' => 'success'));
-            $this->redirect(array('controller' => 'sites', 'action' => 'index'));
-        }
-        $this->Session->setFlash(__('Unable to publish existing links'));
-        $this->redirect(array('controller' => 'sites', 'action' => 'index'));
+
+        $this->Flash->success(__('All links has been published for this site {0}', $site->title));
+
+        return $this->redirect(array('action' => 'index'));
     }
 
     public function _writeSetting($value) {
@@ -168,14 +162,20 @@ class SitesController extends CroogoAppController {
         $this->Setting->write('Site.status', $value);
     }
 
-    public function enable() {
-        $this->_writeSetting(1);
-        $this->redirect(array('action' => 'index', 'admin' => true));
+    public function enableAll() {
+        $this->Sites->enableAll();
+
+        TableRegistry::get('Croogo/Settings.Settings')->write('Site.status', true);
+
+        $this->redirect(array('action' => 'index'));
     }
 
-    public function disable() {
-        $this->_writeSetting(0);
-        $this->redirect(array('action' => 'index', 'admin' => true));
+    public function disableAll() {
+        $this->Sites->disableAll();
+
+        TableRegistry::get('Croogo/Settings.Settings')->write('Site.status', false);
+
+        $this->redirect(array('action' => 'index'));
     }
 
 }

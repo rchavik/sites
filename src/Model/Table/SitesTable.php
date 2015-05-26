@@ -2,6 +2,8 @@
 
 namespace Sites\Model\Table;
 
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Entity;
 use Cake\ORM\Table;
 
 class SitesTable extends Table {
@@ -70,38 +72,49 @@ class SitesTable extends Table {
             'className' => 'Sites.SiteDomains'
         ]);
         $this->belongsToMany('Nodes', [
-            ''
+            'className' => 'Croogo/Nodes.Nodes',
+            'joinTable' => 'sites_nodes',
+            'foreignKey' => 'site_id',
+            'targetForeignKey' => 'node_id',
+            'through' => 'Sites.SitesNodes',
+        ]);
+        $this->belongsToMany('Blocks', [
+            'className' => 'Croogo/Blocks.Blocks',
+            'joinTable' => 'sites_blocks',
+            'foreignKey' => 'site_id',
+            'targetForeignKey' => 'block_id',
+            'through' => 'Sites.SitesBlocks',
+        ]);
+        $this->belongsToMany('Links', [
+            'className' => 'Croogo/Menus.Links',
+            'joinTable' => 'sites_links',
+            'foreignKey' => 'site_id',
+            'targetForeignKey' => 'link_id',
+            'through' => 'Sites.SitesLinks',
         ]);
     }
 
-    public function publish_all($siteId, &$model) {
-        $model->Behaviors->attach('Containable');
-        foreach (array('hasMany', 'belongsTo', 'hasAndBelongsToMany') as $relation) {
-            foreach ($model->{$relation} as $relatedModel => $config) {
-                if ($relatedModel != 'Site') {
-                    $model->unbindModel(array($relation => array($relatedModel)), false);
-                }
+    public function publishAll(Entity $site, BelongsToMany $association) {
+        $query = $association->find()
+            ->contain([
+                'Sites'
+            ])
+            ->where([
+                $association->alias() . '.status' => true
+            ])
+            ->select([
+                'id'
+            ]);
+        $entities = $query;
+        foreach ($entities as $entity) {
+            if (in_array($site->id, collection($entity->sites)->extract('id')->toArray())) {
+                continue;
             }
+
+            $association->link($entity, [$site]);
         }
-        $model->disableFilter();
-        $conditions = array(
-            'contain' => array('Site' => array('id')),
-            'fields' => 'id',
-            'conditions' => array(
-                $model->alias . '.status' => true,
-            )
-        );
-        $rows = $model->find('all', $conditions);
-        foreach ($rows as &$row) {
-            if (isset($row['Site']['Site'])) {
-                $row['Site']['Site'] = array_unique(Set::merge($row['Site']['Site'], array($siteId)));
-            } else {
-                $siteIds = Hash::extract($row, 'Site.{n}.id');
-                $siteIds = array_merge($siteIds, array($siteId));
-                $row['Site']['Site'] = $siteIds;
-            }
-        }
-        return $model->saveAll($rows);
+
+        return true;
     }
 
     /**
@@ -126,6 +139,34 @@ class SitesTable extends Table {
                 return $results[0];
             }
         }
+    }
+
+    public function setDefault(Entity $site) {
+        $this->updateAll([
+            'default' => false,
+        ], [
+            'id IS NOT' => $site->id
+        ]);
+
+        $site->default = true;
+
+        return $this->save($site);
+    }
+
+    public function enableAll() {
+        return $this->updateAll([
+            'status' => true
+        ], [
+            'status' => false
+        ]);
+    }
+
+    public function disableAll() {
+        return $this->updateAll([
+            'status' => false
+        ], [
+            'status' => true
+        ]);
     }
 
     /**

@@ -11,8 +11,8 @@ $this->CroogoHtml
 ?>
 <?php $this->start('actions'); ?>
 	<li><?php echo $this->CroogoHtml->link(__('New Site'), array('action' => 'add'), array('button' => 'default')); ?></li>
-	<li><?php echo $this->CroogoHtml->link(__('Enable All Sites'), array('action' => 'enable'), array('button' => 'default'), 'Enable all sites?'); ?></li>
-	<li><?php echo $this->CroogoHtml->link(__('Disable All Sites'), array('action' => 'disable'), array('button' => 'default'), 'Disable all sites?'); ?></li>
+	<li><?php echo $this->CroogoHtml->link(__('Enable All Sites'), array('action' => 'enableAll'), array('button' => 'default'), 'Enable all sites?'); ?></li>
+	<li><?php echo $this->CroogoHtml->link(__('Disable All Sites'), array('action' => 'disableAll'), array('button' => 'default'), 'Disable all sites?'); ?></li>
 <?php $this->end(); ?>
 
 <h2 class="hidden-desktop"><?php echo __('Sites');?></h2>
@@ -76,10 +76,10 @@ foreach ($sites as $site):
 	</td>
 	<td>
 	<?php
-		if ($site['Site']['default'] == 1) {
+		if ($site->default) {
 			$default = __('Yes');
 		} else {
-			$default = __('No').' ('.$this->CroogoHtml->link(__('Set as default'), array('controller' => 'Sites', 'action' => 'setdefault', $site->id)).')';
+			$default = __('No').' ('.$this->CroogoHtml->link(__('Set as default'), array('controller' => 'Sites', 'action' => 'setDefault', $site->id)).')';
 		}
 		echo $default;
 	?>
