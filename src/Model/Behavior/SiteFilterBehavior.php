@@ -62,6 +62,8 @@ class SiteFilterBehavior extends Behavior {
         );
         extract($setting);
 
+        $query->contain(['Sites']);
+
 //        var_dump($query);
 
 //		if (!empty($joins)) {

@@ -77,14 +77,14 @@ Croogo::hookHelper('*', 'Sites.Sites');
 // alternatively, you can hook this helper later via other plugins
 // Croogo::hookHelper('*', 'Sites.SitesMenus');
 
-Croogo::hookAdminTab('Nodes/admin_add', 'Sites', 'sites.sites_selection');
-Croogo::hookAdminTab('Nodes/admin_edit', 'Sites', 'sites.sites_selection');
-Croogo::hookAdminTab('Attachments/admin_add', 'Sites', 'sites.sites_selection');
-Croogo::hookAdminTab('Attachments/admin_edit', 'Sites', 'sites.sites_selection');
-Croogo::hookAdminTab('Blocks/admin_add', 'Sites', 'sites.sites_selection');
-Croogo::hookAdminTab('Blocks/admin_edit', 'Sites', 'sites.sites_selection');
-Croogo::hookAdminTab('Links/admin_add', 'Sites', 'sites.sites_selection');
-Croogo::hookAdminTab('Links/admin_edit', 'Sites', 'sites.sites_selection');
+Croogo::hookAdminTab('Admin/Nodes/add', 'Sites', 'Sites.sites_selection');
+Croogo::hookAdminTab('Admin/Nodes/edit', 'Sites', 'Sites.sites_selection');
+Croogo::hookAdminTab('Admin/Attachments/add', 'Sites', 'Sites.sites_selection');
+Croogo::hookAdminTab('Admin/Attachments/edit', 'Sites', 'Sites.sites_selection');
+Croogo::hookAdminTab('Admin/Blocks/add', 'Sites', 'Sites.sites_selection');
+Croogo::hookAdminTab('Admin/Blocks/edit', 'Sites', 'Sites.sites_selection');
+Croogo::hookAdminTab('Admin/Links/add', 'Sites', 'Sites.sites_selection');
+Croogo::hookAdminTab('Admin/Links/edit', 'Sites', 'Sites.sites_selection');
 //
 //$cacheConfig = Cache::config('_cake_model_');
 //$cacheConfig = Hash::merge($cacheConfig['settings'], array(

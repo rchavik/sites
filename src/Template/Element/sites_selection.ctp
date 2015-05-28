@@ -1,7 +1,10 @@
 <?php
 
-$options = array('multiple' => 'checkbox', 'div' => 'input checkbox', 'class' => false);
-if (in_array($this->action, array('add', 'admin_add'))) {
-	$options = Set::merge($options, array('selected' => array(Sites::ALL_SITES)));
+use Cake\Utility\Hash;
+use Sites\Sites;
+
+$options = ['multiple' => 'checkbox', 'div' => 'input checkbox', 'class' => false];
+if (in_array($this->request->action, ['add', 'admin_add'])) {
+	$options = Hash::merge($options, ['default' => [Sites::ALL_SITES]]);
 }
-echo $this->Form->input('Site', $options);
+echo $this->CroogoForm->input('sites._ids', $options);
