@@ -75,11 +75,16 @@ class Sites {
 
         $host = env('HTTP_HOST');
         if (empty($siteId)) {
-            $query->contain(['SiteDomains' => function (Query $query) use ($host) {
-                return $query->where([
-                    'SiteDomains.domain LIKE' => '%' . $host
-                ]);
-            }]);
+            $query->join([
+                [
+                    'table' => $Sites->SiteDomains->table(),
+                    'alias' => 'SiteDomains',
+                    'conditions' => [
+                        'SiteDomains.site_id = Sites.id',
+                        'SiteDomains.domain LIKE' => '%' . $host
+                    ]
+                ]
+            ]);
             $query->applyOptions([
                 'cache' => [
                     'name' => 'sites_' . $host,
