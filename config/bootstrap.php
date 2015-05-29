@@ -19,31 +19,29 @@ Croogo::hookBehavior('Croogo/Nodes.Nodes', 'Sites.SiteFilter', array(
 	),
 ));
 
-Croogo::hookBehavior('Block', 'Sites.SiteFilter', array(
+Croogo::hookBehavior('Croogo/Blocks.Blocks', 'Sites.SiteFilter', array(
 	'relationship' => array(
 		'belongsToMany' => array(
 			'Sites' => array(
-				'className' => 'Sites.Site',
+				'className' => 'Sites.Sites',
 				'through' => 'Sites.SitesBlocks',
 				'foreignKey' => 'block_id',
 				'targetForeignKey' => 'site_id',
 				'unique' => 'keepExisting',
-				'joinTable' => 'sites_blocks',
 			),
 		),
 	),
 ));
 
-Croogo::hookBehavior('Link', 'Sites.SiteFilter', array(
+Croogo::hookBehavior('Croogo/Menus.Links', 'Sites.SiteFilter', array(
 	'relationship' => array(
 		'belongsToMany' => array(
 			'Sites' => array(
-				'className' => 'Sites.Site',
+				'className' => 'Sites.Sites',
 				'through' => 'Sites.SitesLinks',
 				'foreignKey' => 'link_id',
 				'targetForeignKey' => 'site_id',
 				'unique' => 'keepExisting',
-				'joinTable' => 'sites_links',
 			),
 		),
 	),
