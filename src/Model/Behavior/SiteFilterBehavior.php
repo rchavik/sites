@@ -30,7 +30,7 @@ class SiteFilterBehavior extends Behavior {
     }
 
     protected function _setupRelationships($config = array()) {
-        if (!empty($this->config('relationship'))) {
+        if ($this->config('relationship')) {
             $this->_table->addAssociations($config['relationship']);
         }
     }
