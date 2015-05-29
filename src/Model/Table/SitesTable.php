@@ -4,6 +4,7 @@ namespace Sites\Model\Table;
 
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Entity;
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 
 class SitesTable extends Table {
@@ -120,25 +121,14 @@ class SitesTable extends Table {
     /**
      * finds the default site
      */
-    protected function _findDefault($state, $query, $results = array()) {
-        if ($state == 'before') {
-            $query = Hash::merge($query, array(
-                'contain' => array('SiteDomain'),
-                'conditions' => array(
-                    'Site.default' => true,
-                    'Site.status' => true,
-                ),
-                'cache' => array(
-                    'name' => 'default_domain',
-                    'config' => 'nodes_index',
-                ),
-            ));
-            return $query;
-        } else {
-            if (isset($results[0])) {
-                return $results[0];
-            }
-        }
+    public function findDefault(Query $query, array $options) {
+        return $query->applyOptions([
+            'name' => 'default_domain',
+            'config' => 'nodes_index',
+        ])->where([
+            'Sites.default' => true,
+            'Sites.status' => true,
+        ]);
     }
 
     public function setDefault(Entity $site) {

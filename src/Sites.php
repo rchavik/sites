@@ -104,27 +104,10 @@ class Sites {
         }
         $site = $query->first();
         if (empty($site)) {
-            $site = $Sites->find('first', array(
-                'recursive' => false,
-                'fields' => array('id', 'title', 'tagline', 'theme', 'timezone', 'locale', 'status'),
-                'joins' => array(
-                    array(
-                        'table' => $siteDomainTable,
-                        'alias' => 'SiteDomain',
-                        'conditions' => array(
-                            'SiteDomain.site_id = Site.id',
-                        ),
-                    ),
-                ),
-                array(
-                    'table' => $siteMetaTable,
-                    'alias' => 'SiteMeta',
-                    'conditions' => array(
-                        'SiteMeta.site_id = Site.id',
-                    ),
-                ),
-                'conditions' => array('Site.default' => 1),
-            ));
+            $site = $Sites->find('default')->contain([
+                'SiteDomains',
+                'SiteMetas'
+            ])->select(['id', 'title', 'tagline', 'theme', 'timezone', 'locale', 'status'])->first();
         }
         $request = Request::createFromGlobals();
         if ($siteId === null && $request->session()->check(self::$_sessionKey) && $active = $request->session()->read(self::$_sessionKey)) {
