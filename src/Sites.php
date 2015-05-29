@@ -4,6 +4,7 @@ namespace Sites;
 
 use Cake\Core\Configure;
 use Cake\Network\Request;
+use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 
@@ -11,7 +12,10 @@ class Sites {
 
     const ALL_SITES = 1;
 
-    protected static $_site = array();
+    /**
+     * @var Entity
+     */
+    protected static $_site;
 
     protected static $_sessionKey = 'Sites.current';
 
@@ -30,8 +34,8 @@ class Sites {
             $keys = $key;
         }
         foreach ($keys as $key) {
-            if (isset(self::$_site['Site'][$key])) {
-                Configure::write('Site.' . $key, self::$_site['Site'][$key]);
+            if (self::$_site->has($key)) {
+                Configure::write('Site.' . $key, self::$_site->get($key));
             }
         }
     }
