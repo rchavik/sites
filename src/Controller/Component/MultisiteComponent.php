@@ -7,6 +7,7 @@ use Cake\Controller\Component;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use Sites\Sites;
@@ -50,14 +51,15 @@ class MultisiteComponent extends Component {
         }
     }
 
-    public function startup(Event $event) {
+    public function beforeFilter(Event $event) {
         /** @var Controller $controller */
         $controller = $event->subject();
-        if (1 == $controller->Auth->user('role_id') && isset($controller->params['admin'])) {
-            if ($controller->{$controller->modelClass}) {
-                $Model =& $controller->{$controller->modelClass};
-                if ($Model instanceof Model && $Model->useTable && $Model->Behaviors->attached('SiteFilter')) {
-                    $Model->Behaviors->SiteFilter->disableFilter($Model);
+        if (1 == $controller->Auth->user('role_id') && $controller->request->param('prefix') === 'admin') {
+            list ($plugin, $class) = pluginSplit($controller->modelClass);
+            if ($controller->{$class}) {
+                $Model =& $controller->{$class};
+                if ($Model instanceof Table && $Model->hasBehavior('SiteFilter')) {
+                    $Model->disableFilter($Model);
                 }
             }
         }

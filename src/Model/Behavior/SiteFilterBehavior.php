@@ -35,12 +35,12 @@ class SiteFilterBehavior extends Behavior {
         }
     }
 
-    public function enableFilter(Model $model) {
-        $this->settings[$model->alias]['filter'] = true;
+    public function enableFilter() {
+        $this->config('filter', true);
     }
 
-    public function disableFilter(Model $model) {
-        $this->settings[$model->alias]['filter'] = false;
+    public function disableFilter() {
+        $this->config('filter', false);
     }
 
     public function beforeFind(Event $event, Query $query) {
