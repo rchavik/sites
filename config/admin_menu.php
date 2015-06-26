@@ -1,8 +1,8 @@
 <?php
 
-use Croogo\Croogo\CroogoNav;
+use Croogo\Core\Nav;
 
-CroogoNav::add('extensions.children.sites', array(
+Nav::add('extensions.children.sites', array(
 	'title' => 'Sites',
 	'url' => array(
         'prefix' => 'admin',

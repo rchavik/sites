@@ -3,7 +3,7 @@
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
-use Croogo\Croogo\Croogo;
+use Croogo\Core\Croogo;
 
 Croogo::hookBehavior('Croogo/Nodes.Nodes', 'Sites.SiteFilter', array(
 	'relationship' => array(
