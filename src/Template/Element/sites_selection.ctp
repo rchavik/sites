@@ -7,4 +7,4 @@ $options = ['multiple' => 'checkbox', 'div' => 'input checkbox', 'class' => fals
 if (in_array($this->request->action, ['add', 'admin_add'])) {
 	$options = Hash::merge($options, ['default' => [Sites::ALL_SITES]]);
 }
-echo $this->CroogoForm->input('sites._ids', $options);
+echo $this->Form->input('sites', $options);
